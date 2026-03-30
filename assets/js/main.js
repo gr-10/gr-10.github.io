@@ -154,19 +154,19 @@ if (sections.length && navAnchors.length) {
   const allItems    = () => Array.from(grid.querySelectorAll('.photo-item'));
 
   // ─ Filter ──────────────────────────────────────────
-  filterBtns.forEach(btn => {
+      filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const f = btn.dataset.filter;
       allItems().forEach(item => {
-        const tags = item.dataset.tag ? item.dataset.tag.split(',').map(t => t.trim()) : [];
-        item.classList.toggle('hidden', f !== 'all' && !tags.includes(f));
+        const tags    = item.dataset.tag ? item.dataset.tag.split(',').map(t => t.trim()) : [];
+        const isKnown = tags.includes('Travel') || tags.includes('Fitness');
+        const show    = f === 'all' || tags.includes(f) || (f === 'other' && !isKnown);
+        item.classList.toggle('hidden', !show);
       });
     });
-  });
-
-  // ─ Lightbox ──────────────────────────────────────
+  });  // ─ Lightbox ──────────────────────────────────────
   const lightbox   = document.getElementById('lightbox');
   const backdrop   = document.getElementById('lightboxBackdrop');
   const lbImg      = document.getElementById('lightboxImg');
