@@ -2,13 +2,9 @@
 layout: post
 title: "Patagonia: The Trek That Changed Me"
 date: 2026-02-14
-categories: [Travel, Hiking]
-location: South America
-hero_emoji: "🏔️"
-card_color: "linear-gradient(135deg, #74b9ff, #0984e3)"
-header_bg: "linear-gradient(160deg, #0a0f1a 0%, #0d1d2e 60%, #0f0f0f 100%)"
-read_time: 10
-excerpt_custom: "Five days on the W-Trek with nothing but a backpack, burning quads, and the most breathtaking scenery on earth."
+tag: Travel
+mood: "humbled 🏔️"
+excerpt_custom: "Five days on the W-Trek. Burning quads, incredible views, and a lot of self-reflection."
 ---
 
 I've done a lot of hikes. Snowdon in Wales, the Cinque Terre coastal trail, the Annapurna circuit — but nothing prepared me for Patagonia. Torres del Paine sits at the end of the world, and it feels like it.

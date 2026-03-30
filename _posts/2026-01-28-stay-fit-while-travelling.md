@@ -2,12 +2,9 @@
 layout: post
 title: "How I Stay Fit While Travelling Full-Time"
 date: 2026-01-28
-categories: [Fitness]
-hero_emoji: "💪"
-card_color: "linear-gradient(135deg, #fd79a8, #e84393)"
-header_bg: "linear-gradient(160deg, #0f0f0f 0%, #1a0d1a 60%, #0f0f0f 100%)"
-read_time: 7
-excerpt_custom: "No gym? No problem. My go-to bodyweight routine, travel hacks, and mindset for staying consistent on the road."
+tag: Fitness
+mood: "motivated 💪"
+excerpt_custom: "No gym? No problem. My actual routine for staying consistent on the road."
 ---
 
 The number one excuse I hear from fellow travellers is: "I can't train — I'm travelling." I used to say it too. Then I realised the excuse was a lie I was telling myself, and I stopped.

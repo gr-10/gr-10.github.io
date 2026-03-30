@@ -1,8 +1,8 @@
 title: Grenston George
-tagline: "Traveller · Fitness Enthusiast · Writer"
+tagline: "Personal Diary"
 description: >-
-  Personal blog by Grenston George — stories from the trail, the gym, and every
-  corner of the world worth exploring.
+  The personal diary of Grenston George — daily logs on travel, fitness,
+  thoughts, and everything in between.
 url: "https://gr-10.github.io"
 baseurl: ""
 
@@ -26,11 +26,11 @@ plugins:
 # Set "Source" to "GitHub Actions" in repo Settings → Pages
 
 # Pagination
-paginate: 6
-paginate_path: "/blog/page:num/"
+paginate: 10
+paginate_path: "/diary/page:num/"
 
 # Collections
-permalink: /blog/:year/:month/:day/:title/
+permalink: /diary/:year/:month/:day/:title/
 
 # Markdown
 markdown: kramdown

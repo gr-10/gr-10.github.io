@@ -2,12 +2,9 @@
 layout: post
 title: "Beginner's Guide to Strength Training"
 date: 2025-11-10
-categories: [Fitness, Training]
-hero_emoji: "🏋️"
-card_color: "linear-gradient(135deg, #74b9ff, #0984e3)"
-header_bg: "linear-gradient(160deg, #0a0f1a 0%, #0d1525 60%, #0f0f0f 100%)"
-read_time: 11
-excerpt_custom: "Everything I wish I knew when I started lifting — from form fundamentals to your first 12-week program."
+tag: Fitness
+mood: "focused 🏋️"
+excerpt_custom: "Everything I wish I knew when I started lifting — form, programming, and staying consistent."
 ---
 
 When I walked into a gym for the first time, I had no idea what I was doing. I copied the guy next to me, got the form completely wrong, and barely progressed for 6 months. This guide is everything I wish someone had handed me on day one.

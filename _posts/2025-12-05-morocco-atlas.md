@@ -2,13 +2,9 @@
 layout: post
 title: "Morocco: Souks, Sahara & Summit"
 date: 2025-12-05
-categories: [Travel, Hiking]
-location: Africa
-hero_emoji: "🌄"
-card_color: "linear-gradient(135deg, #ffeaa7, #fdcb6e)"
-header_bg: "linear-gradient(160deg, #1a0f00 0%, #1f1500 60%, #0f0f0f 100%)"
-read_time: 9
-excerpt_custom: "Three adventures in one: navigating Marrakech medinas, camping under Sahara stars, and climbing Jebel Toubkal — North Africa at its finest."
+tag: Travel
+mood: "awestruck 🌄"
+excerpt_custom: "Marrakech medinas, Sahara camping, and standing on the roof of North Africa."
 ---
 
 Morocco assaults your senses the moment you step off the plane. Spice, colour, sound, heat. I'd been warned it was overwhelming. The warning was accurate. It's also utterly intoxicating.

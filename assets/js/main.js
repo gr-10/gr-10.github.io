@@ -69,24 +69,6 @@ if (sections.length && navAnchors.length) {
   sections.forEach(s => sectionObserver.observe(s));
 }
 
-// ── Blog filter (listing page) ───────────────────────────────
-const filterBtns = document.querySelectorAll('.filter-btn');
-const blogPosts  = document.querySelectorAll('#blogGrid .blog-post');
-
-if (filterBtns.length) {
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      blogPosts.forEach(post => {
-        const show = filter === 'all' || post.dataset.category === filter;
-        post.style.display = show ? '' : 'none';
-      });
-    });
-  });
-}
-
 // ── Contact form feedback ─────────────────────────────────────
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
