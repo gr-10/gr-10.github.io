@@ -145,8 +145,96 @@ if (sections.length && navAnchors.length) {
   initTrack('shortsTrack');
 }());
 
+/* ── PHOTOS: filter + lightbox ───────────────────────────── */
+(function () {
+  const grid        = document.getElementById('photosGrid');
+  if (!grid) return;
+
+  const filterBtns  = document.querySelectorAll('.photo-filter-btn');
+  const allItems    = () => Array.from(grid.querySelectorAll('.photo-item'));
+
+  // ─ Filter ──────────────────────────────────────────
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      allItems().forEach(item => {
+        const tags = item.dataset.tag ? item.dataset.tag.split(',').map(t => t.trim()) : [];
+        item.classList.toggle('hidden', f !== 'all' && !tags.includes(f));
+      });
+    });
+  });
+
+  // ─ Lightbox ──────────────────────────────────────
+  const lightbox   = document.getElementById('lightbox');
+  const backdrop   = document.getElementById('lightboxBackdrop');
+  const lbImg      = document.getElementById('lightboxImg');
+  const lbCaption  = document.getElementById('lightboxCaption');
+  const closeBtn   = document.getElementById('lightboxClose');
+  const prevBtn    = document.getElementById('lightboxPrev');
+  const nextBtn    = document.getElementById('lightboxNext');
+
+  let visibleItems = [];
+  let currentIdx   = 0;
+
+  function openLightbox(idx) {
+    visibleItems = allItems().filter(i => !i.classList.contains('hidden'));
+    currentIdx   = idx;
+    showSlide(currentIdx);
+    lightbox.classList.add('active');
+    backdrop.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    backdrop.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  function showSlide(idx) {
+    const item   = visibleItems[idx];
+    if (!item) return;
+    const src    = item.dataset.src;
+    const title  = item.dataset.title || '';
+    const date   = item.dataset.date  || '';
+    lbImg.src    = src;
+    lbImg.alt    = title;
+    lbCaption.textContent = title + (date ? '  ·  ' + date : '');
+    prevBtn.style.visibility = idx > 0 ? 'visible' : 'hidden';
+    nextBtn.style.visibility = idx < visibleItems.length - 1 ? 'visible' : 'hidden';
+  }
+
+  // Open on click — prevent nav to post, open lightbox instead
+  grid.addEventListener('click', e => {
+    const link = e.target.closest('.photo-thumb-link');
+    if (!link) return;
+    e.preventDefault();
+    const item = link.closest('.photo-item');
+    const visible = allItems().filter(i => !i.classList.contains('hidden'));
+    const idx    = visible.indexOf(item);
+    if (idx !== -1) openLightbox(idx);
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+  backdrop.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', () => { currentIdx--; showSlide(currentIdx); });
+  nextBtn.addEventListener('click', () => { currentIdx++; showSlide(currentIdx); });
+
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  { currentIdx = Math.max(0, currentIdx - 1); showSlide(currentIdx); }
+    if (e.key === 'ArrowRight') { currentIdx = Math.min(visibleItems.length - 1, currentIdx + 1); showSlide(currentIdx); }
+  });
+}());
+
 /* ── REELS: filter + play ─────────────────────────────────────
-   Runs only on the /videos/ page                              */
+   Runs only on the /shorts/ page                              */
 (function () {
   const filterBtns = document.querySelectorAll('.reel-filter-btn');
   const reelCards  = document.querySelectorAll('.reel-card');
@@ -161,7 +249,7 @@ if (sections.length && navAnchors.length) {
       const filter = btn.dataset.filter;
       reelCards.forEach(card => {
         const tags = card.dataset.tag.split(',').map(t => t.trim());
-        const isKnown = tags.includes('Travel') || tags.includes('Fitness');
+        const isKnown = tags.includes('Travel') || tags.includes('Fitness') || tags.includes('Editing');
         const show =
           filter === 'all' ||
           tags.includes(filter) ||

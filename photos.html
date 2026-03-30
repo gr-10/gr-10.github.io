@@ -1,0 +1,104 @@
+---
+layout: default
+title: Photos
+permalink: /photos/
+---
+
+<section class="photos-page">
+
+  <div class="photos-header">
+    <div>
+      <p class="section-label">Gallery</p>
+      <h1 class="reels-page-title">Photos</h1>
+    </div>
+    <div class="reels-filter" id="photosFilter">
+      <button class="photo-filter-btn active" data-filter="all">All</button>
+      {% assign all_tags = site.posts | map: "tag" | uniq | sort %}
+      {% for t in all_tags %}
+        {% if t %}
+          {% unless t == "" %}
+            <button class="photo-filter-btn" data-filter="{{ t }}">{{ t }}</button>
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="photos-grid" id="photosGrid">
+    {% for post in site.posts %}
+      {% assign tag_str = post.tag | join: "," %}
+
+      {% comment %} Header / cover image {% endcomment %}
+      {% if post.image %}
+      <div class="photo-item" data-tag="{{ tag_str }}"
+           data-src="{{ post.image | relative_url }}"
+           data-title="{{ post.title }}"
+           data-date="{{ post.date | date: '%d %b %Y' }}"
+           data-url="{{ post.url | relative_url }}">
+        <a href="{{ post.url | relative_url }}" class="photo-thumb-link">
+          <img
+            src="{{ post.image | relative_url }}"
+            alt="{{ post.title }}"
+            loading="lazy"
+            class="photo-thumb"
+          >
+          <div class="photo-overlay">
+            <span class="photo-overlay-title">{{ post.title }}</span>
+            <span class="photo-overlay-meta">
+              {% if post.tag %}
+                {% assign tag_list = post.tag %}
+                {% unless tag_list.first %}{% assign tag_list = post.tag | split: "," %}{% endunless %}
+                {% for t in tag_list %}<span class="diary-tag">{{ t | strip }}</span> {% endfor %}
+              {% endif %}
+              <span class="photo-overlay-date">{{ post.date | date: "%d %b %Y" }}</span>
+            </span>
+          </div>
+        </a>
+      </div>
+      {% endif %}
+
+      {% comment %} Gallery images {% endcomment %}
+      {% for img in post.gallery %}
+      <div class="photo-item" data-tag="{{ tag_str }}"
+           data-src="{{ img | relative_url }}"
+           data-title="{{ post.title }}"
+           data-date="{{ post.date | date: '%d %b %Y' }}"
+           data-url="{{ post.url | relative_url }}">
+        <a href="{{ post.url | relative_url }}" class="photo-thumb-link">
+          <img
+            src="{{ img | relative_url }}"
+            alt="{{ post.title }}"
+            loading="lazy"
+            class="photo-thumb"
+          >
+          <div class="photo-overlay">
+            <span class="photo-overlay-title">{{ post.title }}</span>
+            <span class="photo-overlay-meta">
+              {% if post.tag %}
+                {% assign tag_list = post.tag %}
+                {% unless tag_list.first %}{% assign tag_list = post.tag | split: "," %}{% endunless %}
+                {% for t in tag_list %}<span class="diary-tag">{{ t | strip }}</span> {% endfor %}
+              {% endif %}
+              <span class="photo-overlay-date">{{ post.date | date: "%d %b %Y" }}</span>
+            </span>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+
+    {% endfor %}
+  </div>
+
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+  <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous">‹</button>
+  <button class="lightbox-next" id="lightboxNext" aria-label="Next">›</button>
+  <div class="lightbox-img-wrap">
+    <img src="" alt="" id="lightboxImg" class="lightbox-img">
+  </div>
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+<div class="lightbox-backdrop" id="lightboxBackdrop"></div>

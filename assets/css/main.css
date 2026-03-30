@@ -975,6 +975,206 @@ a { color: inherit; text-decoration: none; }
   .reels-header { flex-direction: column; align-items: flex-start; }
 }
 
+/* ── PHOTOS / GALLERY PAGE ──────────────────────────── */
+.photos-page {
+  min-height: 100vh;
+  padding: 120px 1.5rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.photos-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.photo-filter-btn {
+  background: transparent;
+  border: 1px solid var(--clr-border);
+  color: var(--clr-muted);
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  font-family: var(--font-body);
+}
+.photo-filter-btn:hover { border-color: var(--clr-accent); color: var(--clr-accent); }
+.photo-filter-btn.active {
+  background: var(--clr-accent);
+  border-color: var(--clr-accent);
+  color: #000;
+  font-weight: 600;
+}
+
+/* Masonry-style CSS columns grid */
+.photos-grid {
+  columns: 4 220px;
+  column-gap: 0.75rem;
+}
+
+.photo-item {
+  break-inside: avoid;
+  margin-bottom: 0.75rem;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.photo-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 36px rgba(0,0,0,.55);
+  z-index: 1;
+}
+.photo-item.hidden { display: none; }
+
+.photo-thumb-link {
+  display: block;
+  position: relative;
+  text-decoration: none;
+}
+
+.photo-thumb {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Hover overlay */
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,0) 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.photo-item:hover .photo-overlay { opacity: 1; }
+
+.photo-overlay-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+.photo-overlay-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.photo-overlay-date {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,.7);
+}
+
+/* ── LIGHTBOX ──────────────────────────────────────── */
+.lightbox-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  z-index: 2000;
+  backdrop-filter: blur(6px);
+}
+.lightbox-backdrop.active { display: block; }
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2001;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.lightbox.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbox-img-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.6);
+  display: block;
+}
+
+.lightbox-caption {
+  text-align: center;
+  padding: 0.75rem 1rem 0;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,.75);
+  flex-shrink: 0;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.4rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.lightbox-close:hover { opacity: 1; }
+
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  line-height: 1;
+}
+.lightbox-prev { left: 1.2rem; }
+.lightbox-next { right: 1.2rem; }
+.lightbox-prev:hover,
+.lightbox-next:hover { background: rgba(255,255,255,.25); }
+
+@media (max-width: 600px) {
+  .photos-grid { columns: 2 140px; }
+  .lightbox-prev { left: 0.4rem; }
+  .lightbox-next { right: 0.4rem; }
+  .photos-header { flex-direction: column; align-items: flex-start; }
+}
+
 /* ── Scroll animations ── */
 .fade-up {
   opacity: 0;
