@@ -8,7 +8,7 @@ hero_emoji: "🇯🇵"
 card_color: "linear-gradient(135deg, #ff6b6b, #ee5a24)"
 header_bg: "linear-gradient(160deg, #0f0f0f 0%, #1a0f1f 50%, #0d1525 100%)"
 read_time: 8
-excerpt_custom: "How I balanced sightseeing, local culture, and keeping up my fitness routine across 10 spectacular days in Japan."
+excerpt_custom: "How I balanced sightseeing, local culture, and keeping up my fitness routine across 3 spectacular days in Japan."
 ---
 
 Japan had been on my list for years. I finally landed at Narita on a crisp February morning, jet-lagged but buzzing with anticipation. Ten days felt generous until I opened my itinerary and realised I'd crammed in Tokyo, Kyoto, Osaka, and Hakone — and somehow planned a trail run around Mount Kurama.
