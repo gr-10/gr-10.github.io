@@ -9,10 +9,8 @@ baseurl: ""
 author:
   name: Grenston George
   email: ""
-  twitter: ""
-  instagram: ""
-  strava: ""
-  linkedin: ""
+  instagram: "gr10.life"
+  strava: "2047574881"
 
 # Build settings
 theme: null          # custom theme — no minima

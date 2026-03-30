@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0a2e"/>
+      <stop offset="50%" style="stop-color:#2d1b4e"/>
+      <stop offset="100%" style="stop-color:#0f1a2e"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="70%" cy="20%" r="15%">
+      <stop offset="0%" style="stop-color:#ffe8a0;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#ffe8a0;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <!-- Sky -->
+  <rect width="600" height="800" fill="url(#g)"/>
+  <!-- Moon glow -->
+  <circle cx="420" cy="130" r="80" fill="url(#moon)" opacity="0.4"/>
+  <!-- Moon -->
+  <circle cx="420" cy="130" r="42" fill="#fff8e7"/>
+  <!-- Stars -->
+  <circle cx="80" cy="60" r="2" fill="#fff" opacity="0.8"/>
+  <circle cx="150" cy="40" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="220" cy="90" r="1" fill="#fff" opacity="0.7"/>
+  <circle cx="320" cy="50" r="2" fill="#fff" opacity="0.5"/>
+  <circle cx="500" cy="70" r="1.5" fill="#fff" opacity="0.8"/>
+  <circle cx="540" cy="200" r="1" fill="#fff" opacity="0.6"/>
+  <circle cx="60" cy="200" r="1.5" fill="#fff" opacity="0.5"/>
+  <circle cx="180" cy="170" r="1" fill="#fff" opacity="0.7"/>
+  <!-- Mountain silhouette -->
+  <polygon points="0,600 150,320 300,500 420,280 600,580 600,800 0,800" fill="#0d0d1a"/>
+  <!-- Pagoda silhouette -->
+  <rect x="240" y="420" width="10" height="80" fill="#0d0d1a"/>
+  <polygon points="220,430 260,430 245,410" fill="#0d0d1a"/>
+  <polygon points="225,445 255,445 245,428" fill="#0d0d1a"/>
+  <rect x="235" y="500" width="20" height="10" fill="#0d0d1a"/>
+  <!-- Torii gate silhouette -->
+  <rect x="350" y="480" width="8" height="100" fill="#c0392b"/>
+  <rect x="390" y="480" width="8" height="100" fill="#c0392b"/>
+  <rect x="342" y="490" width="64" height="10" fill="#c0392b"/>
+  <rect x="348" y="480" width="52" height="8" fill="#c0392b"/>
+  <!-- Foreground water reflection -->
+  <rect x="0" y="700" width="600" height="100" fill="#0a0a18" opacity="0.8"/>
+  <ellipse cx="420" cy="720" rx="30" ry="6" fill="#ffe8a0" opacity="0.15"/>
+  <!-- Label -->
+  <text x="300" y="775" font-family="Georgia, serif" font-size="18" fill="#f0a500" text-anchor="middle" opacity="0.9">Japan</text>
+</svg>

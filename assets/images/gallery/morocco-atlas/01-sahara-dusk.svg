@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1628"/>
+      <stop offset="50%" style="stop-color:#c2713a"/>
+      <stop offset="100%" style="stop-color:#8b5e3c"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4a96a"/>
+      <stop offset="100%" style="stop-color:#8b6040"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#sky)"/>
+  <circle cx="480" cy="90" r="30" fill="#ffeaa0"/>
+  <circle cx="493" cy="82" r="26" fill="#1e3050"/>
+  <!-- Sand dunes -->
+  <ellipse cx="0" cy="650" rx="250" ry="100" fill="url(#sand)"/>
+  <ellipse cx="350" cy="620" rx="320" ry="120" fill="url(#sand)"/>
+  <ellipse cx="600" cy="660" rx="220" ry="90" fill="url(#sand)"/>
+  <rect x="0" y="720" width="600" height="80" fill="#7a4f2a"/>
+  <!-- Camel silhouettes -->
+  <!-- Camel 1 -->
+  <ellipse cx="150" cy="590" rx="55" ry="30" fill="#1a0a05"/>
+  <ellipse cx="175" cy="565" rx="22" ry="18" fill="#1a0a05"/>
+  <rect x="168" y="575" width="14" height="8" fill="#1a0a05"/>
+  <!-- hump -->
+  <ellipse cx="135" cy="568" rx="20" ry="14" fill="#1a0a05"/>
+  <!-- neck/head -->
+  <rect x="185" y="548" width="8" height="28" fill="#1a0a05"/>
+  <ellipse cx="189" cy="544" rx="10" ry="8" fill="#1a0a05"/>
+  <!-- legs -->
+  <rect x="118" y="618" width="7" height="35" fill="#1a0a05"/>
+  <rect x="132" y="618" width="7" height="35" fill="#1a0a05"/>
+  <rect x="160" y="618" width="7" height="35" fill="#1a0a05"/>
+  <rect x="174" y="618" width="7" height="35" fill="#1a0a05"/>
+  <!-- Stars -->
+  <circle cx="60" cy="60" r="2" fill="#fff" opacity="0.8"/>
+  <circle cx="200" cy="40" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="320" cy="80" r="1" fill="#fff" opacity="0.7"/>
+  <text x="300" y="775" font-family="Georgia, serif" font-size="16" fill="#f0a500" text-anchor="middle">Sahara Dusk</text>
+</svg>

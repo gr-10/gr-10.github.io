@@ -14,33 +14,19 @@ permalink: /diary/
 
 <section class="section diary-list-section">
   <div class="container">
-    <div class="diary-list" id="diaryList">
-      {% for post in paginator.posts %}
-      <a href="{{ post.url | relative_url }}" class="diary-entry fade-up">
-        <div class="diary-entry-date">
-          <span class="diary-day">{{ post.date | date: "%d" }}</span>
-          <span class="diary-month">{{ post.date | date: "%b %Y" }}</span>
-        </div>
-        <div class="diary-entry-body">
+    <div class="diary-index" id="diaryList">
+      {% for post in site.posts %}
+      <a href="{{ post.url | relative_url }}" class="diary-row fade-up">
+        <span class="diary-row-date">{{ post.date | date: "%d %b %Y" }}</span>
+        <span class="diary-row-tags">
           {% if post.tag %}<span class="diary-tag">{{ post.tag }}</span>{% endif %}
-          <h3>{{ post.title }}</h3>
-          <p>{{ post.excerpt | strip_html | truncate: 160 }}</p>
-        </div>
-        <div class="diary-entry-arrow">→</div>
+          {% if post.mood %}<span class="diary-mood-tag">{{ post.mood }}</span>{% endif %}
+        </span>
+        <span class="diary-row-title">{{ post.title }}</span>
+        <span class="diary-row-arrow">→</span>
       </a>
       {% endfor %}
     </div>
 
-    {% if paginator.total_pages > 1 %}
-    <nav class="pagination" aria-label="Diary pagination">
-      {% if paginator.previous_page %}
-        <a href="{{ paginator.previous_page_path | relative_url }}" class="btn btn-outline">← Newer</a>
-      {% endif %}
-      <span class="pagination-info">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
-      {% if paginator.next_page %}
-        <a href="{{ paginator.next_page_path | relative_url }}" class="btn btn-outline">Older →</a>
-      {% endif %}
-    </nav>
-    {% endif %}
   </div>
 </section>

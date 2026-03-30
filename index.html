@@ -24,19 +24,29 @@ title: Home
   <div class="container">
     <p class="section-label center">Recent Entries</p>
     <h2 class="section-title center">What I've Been Up To</h2>
-    <div class="diary-list">
-      {% for post in site.posts limit: 5 %}
-      <a href="{{ post.url | relative_url }}" class="diary-entry fade-up">
-        <div class="diary-entry-date">
-          <span class="diary-day">{{ post.date | date: "%d" }}</span>
-          <span class="diary-month">{{ post.date | date: "%b %Y" }}</span>
+    <div class="diary-cards">
+      {% for post in site.posts limit: 3 %}
+      <a href="{{ post.url | relative_url }}" class="diary-card fade-up">
+        <div class="diary-card-cover">
+          {% if post.image %}
+            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy">
+          {% else %}
+            <div class="diary-card-cover-placeholder">{{ post.date | date: "%d" }}</div>
+          {% endif %}
         </div>
-        <div class="diary-entry-body">
-          {% if post.tag %}<span class="diary-tag">{{ post.tag }}</span>{% endif %}
-          <h3>{{ post.title }}</h3>
-          <p>{{ post.excerpt | strip_html | truncate: 140 }}</p>
+        <div class="diary-card-inner">
+          <div class="diary-card-date">
+            <span class="diary-day">{{ post.date | date: "%d" }}</span>
+            <span class="diary-month">{{ post.date | date: "%b" }}</span>
+            <span class="diary-year">{{ post.date | date: "%Y" }}</span>
+          </div>
+          <div class="diary-card-body">
+            {% if post.tag %}<span class="diary-tag">{{ post.tag }}</span>{% endif %}
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.excerpt_custom | default: post.excerpt | strip_html | truncate: 120 }}</p>
+          </div>
+          <span class="diary-card-arrow">→</span>
         </div>
-        <div class="diary-entry-arrow">→</div>
       </a>
       {% endfor %}
     </div>
@@ -46,34 +56,70 @@ title: Home
   </div>
 </section>
 
-<!-- ───────────────────────── CONTACT ───────────────────────── -->
+<!-- ───────────────────────── SAY HELLO ───────────────────────── -->
 <section class="section contact-section" id="contact">
-  <div class="container contact-inner">
-    <p class="section-label center">Contact</p>
-    <h2 class="section-title center">Say Hello</h2>
-    <p class="section-sub center">Want to share a trail tip, debate a workout, or just say hi? I read every message.</p>
-    <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required>
+  <div class="container">
+    <p class="section-label center">Say Hello</p>
+    <h2 class="section-title center">Find Me Online</h2>
+    <p class="section-sub center">Follow along on Instagram, track my runs on Strava, or drop me an email.</p>
+    <div class="social-cards">
+
+      <!-- Instagram -->
+      <a
+        href="https://www.instagram.com/{{ site.author.instagram }}/"
+        class="social-card social-card--instagram"
+        target="_blank" rel="noopener"
+        aria-label="Instagram">
+        <div class="social-card-icon">
+          <!-- Instagram SVG logo -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="36" height="36" aria-hidden="true">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="_replyto" placeholder="your@email.com" required>
+        <div class="social-card-body">
+          <span class="social-card-name">Instagram</span>
+          <span class="social-card-handle">{% if site.author.instagram %}@{{ site.author.instagram }}{% else %}@grenston{% endif %}</span>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="What's on your mind?" required></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary btn-full">Send ✉️</button>
-    </form>
-    <div class="social-links">
-      {% if site.author.instagram %}<a href="https://instagram.com/{{ site.author.instagram }}" class="social-link" target="_blank" rel="noopener">Instagram</a>{% else %}<a href="#" class="social-link">Instagram</a>{% endif %}
-      {% if site.author.twitter %}<a href="https://twitter.com/{{ site.author.twitter }}" class="social-link" target="_blank" rel="noopener">Twitter / X</a>{% else %}<a href="#" class="social-link">Twitter / X</a>{% endif %}
-      {% if site.author.strava %}<a href="https://strava.com/athletes/{{ site.author.strava }}" class="social-link" target="_blank" rel="noopener">Strava</a>{% else %}<a href="#" class="social-link">Strava</a>{% endif %}
-      {% if site.author.linkedin %}<a href="https://linkedin.com/in/{{ site.author.linkedin }}" class="social-link" target="_blank" rel="noopener">LinkedIn</a>{% else %}<a href="#" class="social-link">LinkedIn</a>{% endif %}
+        <span class="social-card-arrow">→</span>
+      </a>
+
+      <!-- Strava -->
+      <a
+        href="https://www.strava.com/athletes/{{ site.author.strava }}/"
+        class="social-card social-card--strava"
+        target="_blank" rel="noopener"
+        aria-label="Strava">
+        <div class="social-card-icon">
+          <!-- Strava SVG logo -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="36" height="36" aria-hidden="true">
+            <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/>
+          </svg>
+        </div>
+        <div class="social-card-body">
+          <span class="social-card-name">Strava</span>
+          <span class="social-card-handle">{% if site.author.strava %}Follow my runs{% else %}Follow my runs{% endif %}</span>
+        </div>
+        <span class="social-card-arrow">→</span>
+      </a>
+
+      <!-- Email -->
+      <a
+        href="mailto:mailme@gr10.life"
+        class="social-card social-card--email"
+        aria-label="Email">
+        <div class="social-card-icon">
+          <!-- Envelope SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="36" height="36" aria-hidden="true">
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </div>
+        <div class="social-card-body">
+          <span class="social-card-name">Email</span>
+          <span class="social-card-handle">mailme@gr10.life</span>
+        </div>
+        <span class="social-card-arrow">→</span>
+      </a>
+
     </div>
   </div>
 </section>

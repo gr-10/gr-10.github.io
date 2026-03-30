@@ -5,6 +5,11 @@ date: 2026-03-20
 tag: Travel
 mood: "energised 🏃"
 excerpt_custom: "10 days in Japan — sightseeing, trail running, and eating my body weight in ramen."
+image: /assets/images/headers/japan-adventures.svg
+gallery:
+  - /assets/images/gallery/japan-adventures/01-tokyo-night.svg
+  - /assets/images/gallery/japan-adventures/02-mount-fuji.svg
+  - /assets/images/gallery/japan-adventures/03-fushimi-inari.svg
 ---
 
 Japan had been on my list for years. I finally landed at Narita on a crisp February morning, jet-lagged but buzzing with anticipation. Ten days felt generous until I opened my itinerary and realised I'd crammed in Tokyo, Kyoto, Osaka, and Hakone — and somehow planned a trail run around Mount Kurama.

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6a9fd8"/>
+      <stop offset="100%" style="stop-color:#c8e0f0"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#sky)"/>
+  <!-- Toubkal peak -->
+  <polygon points="0,800 0,550 120,320 250,500 300,240 350,460 480,300 600,420 600,800" fill="#6b7a6a"/>
+  <!-- Snow -->
+  <polygon points="300,240 270,320 330,320" fill="white"/>
+  <polygon points="480,300 455,370 505,370" fill="white" opacity="0.8"/>
+  <polygon points="120,320 95,390 145,390" fill="white" opacity="0.7"/>
+  <!-- Clouds -->
+  <ellipse cx="150" cy="140" rx="80" ry="25" fill="white" opacity="0.8"/>
+  <ellipse cx="470" cy="110" rx="70" ry="22" fill="white" opacity="0.7"/>
+  <!-- Summit marker -->
+  <rect x="294" y="200" width="4" height="40" fill="#e63946"/>
+  <polygon points="298,200 316,210 298,220" fill="#e63946"/>
+  <!-- Prayer flags -->
+  <line x1="270" y1="215" x2="330" y2="215" stroke="#888" stroke-width="1.5"/>
+  <rect x="270" y="210" width="10" height="8" fill="#e63946"/>
+  <rect x="285" y="210" width="10" height="8" fill="#ffd700"/>
+  <rect x="300" y="210" width="10" height="8" fill="#4a90d9"/>
+  <rect x="315" y="210" width="10" height="8" fill="#2ecc71"/>
+  <text x="300" y="775" font-family="Georgia, serif" font-size="16" fill="#1a1a1a" text-anchor="middle">Mount Toubkal Summit</text>
+</svg>

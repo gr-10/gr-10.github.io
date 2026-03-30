@@ -20,6 +20,31 @@ layout: default
 
   <div class="entry-body">
     <div class="container">
+      {% if page.gallery and page.gallery.size > 0 %}
+      <div class="post-gallery" role="region" aria-label="Photo gallery">
+        <div class="post-gallery-track-wrap">
+          <div class="post-gallery-track" id="galleryTrack">
+            {% for img in page.gallery %}
+            <div class="post-gallery-slide">
+              <img src="{{ img | relative_url }}" alt="{{ page.title }} — photo {{ forloop.index }}" loading="lazy">
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% if page.gallery.size > 1 %}
+        <div class="post-gallery-nav">
+          <button class="gallery-btn gallery-btn--prev" aria-label="Previous photo" data-gallery-prev>‹</button>
+          <div class="gallery-dots" id="galleryDots">
+            {% for img in page.gallery %}
+            <button class="gallery-dot{% if forloop.first %} active{% endif %}" aria-label="Photo {{ forloop.index }}" data-gallery-index="{{ forloop.index0 }}"></button>
+            {% endfor %}
+          </div>
+          <button class="gallery-btn gallery-btn--next" aria-label="Next photo" data-gallery-next>›</button>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
       {{ content }}
     </div>
   </div>
@@ -30,18 +55,16 @@ layout: default
 <section class="section related-section">
   <div class="container">
     <p class="section-label center">More Entries</p>
-    <div class="diary-list">
+    <div class="diary-index">
       {% for post in related %}
-      <a href="{{ post.url | relative_url }}" class="diary-entry">
-        <div class="diary-entry-date">
-          <span class="diary-day">{{ post.date | date: "%d" }}</span>
-          <span class="diary-month">{{ post.date | date: "%b %Y" }}</span>
-        </div>
-        <div class="diary-entry-body">
+      <a href="{{ post.url | relative_url }}" class="diary-row">
+        <span class="diary-row-date">{{ post.date | date: "%d %b %Y" }}</span>
+        <span class="diary-row-tags">
           {% if post.tag %}<span class="diary-tag">{{ post.tag }}</span>{% endif %}
-          <h3>{{ post.title }}</h3>
-        </div>
-        <div class="diary-entry-arrow">→</div>
+          {% if post.mood %}<span class="diary-mood-tag">{{ post.mood }}</span>{% endif %}
+        </span>
+        <span class="diary-row-title">{{ post.title }}</span>
+        <span class="diary-row-arrow">→</span>
       </a>
       {% endfor %}
     </div>

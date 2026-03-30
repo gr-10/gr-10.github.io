@@ -69,25 +69,49 @@ if (sections.length && navAnchors.length) {
   sections.forEach(s => sectionObserver.observe(s));
 }
 
-// ── Contact form feedback ─────────────────────────────────────
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-  contactForm.addEventListener('submit', e => {
-    // Let Formspree handle real submissions; show feedback for demo
-    const action = contactForm.getAttribute('action') || '';
-    if (action.includes('YOUR_FORM_ID')) {
-      e.preventDefault();
-      const btn = contactForm.querySelector('button[type="submit"]');
-      const original = btn.textContent;
-      btn.textContent = '✅ Message sent! (Configure Formspree to enable real email)';
-      btn.disabled = true;
-      btn.style.background = '#00b894';
-      setTimeout(() => {
-        btn.textContent = original;
-        btn.disabled = false;
-        btn.style.background = '';
-        contactForm.reset();
-      }, 5000);
-    }
+// ── Photo gallery ─────────────────────────────────────────────
+(function () {
+  const track = document.getElementById('galleryTrack');
+  if (!track) return;
+
+  const slides  = Array.from(track.querySelectorAll('.post-gallery-slide'));
+  const dots    = Array.from(document.querySelectorAll('[data-gallery-index]'));
+  const prevBtn = document.querySelector('[data-gallery-prev]');
+  const nextBtn = document.querySelector('[data-gallery-next]');
+  let current   = 0;
+
+  function getSlideWidth() {
+    const s     = slides[0];
+    const style = window.getComputedStyle(s);
+    return s.offsetWidth + parseFloat(style.marginRight || 0);
+  }
+
+  function goTo(index) {
+    const count = slides.length;
+    current     = ((index % count) + count) % count;
+    track.scrollTo({ left: current * getSlideWidth(), behavior: 'smooth' });
+    syncDots();
+  }
+
+  function syncDots() {
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => goTo(parseInt(dot.dataset.galleryIndex, 10)));
   });
-}
+
+  // Sync dots when user swipes manually
+  let scrollTimer;
+  track.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      const sw  = getSlideWidth();
+      const idx = Math.round(track.scrollLeft / sw);
+      if (idx !== current) { current = idx; syncDots(); }
+    }, 80);
+  }, { passive: true });
+}());
