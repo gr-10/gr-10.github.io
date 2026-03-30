@@ -1,5 +1,10 @@
 <nav class="navbar" id="navbar">
-  <a class="nav-logo" href="{{ '/' | relative_url }}">Grenston.</a>
+  <a class="nav-logo" href="{{ '/' | relative_url }}">
+    {% if site.author.avatar %}
+      <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" class="nav-avatar">
+    {% endif %}
+    <span class="nav-logo-text">Grenston.</span>
+  </a>
 
   <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
     <span></span><span></span><span></span>

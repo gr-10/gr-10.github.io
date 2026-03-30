@@ -7,7 +7,11 @@ title: Home
 <section class="section about about--page" id="about">
   <div class="container two-col">
     <div class="about-image-wrap fade-up">
-      <div class="about-img-placeholder"><span>GG</span></div>
+      {% if site.author.avatar %}
+        <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" class="about-avatar">
+      {% else %}
+        <div class="about-img-placeholder"><span>GG</span></div>
+      {% endif %}
     </div>
     <div class="about-text fade-up">
       <p class="section-label">Hey, I'm Grenston</p>
