@@ -1,0 +1,105 @@
+---
+layout: default
+title: About
+---
+
+<!-- ───────────────────────── ABOUT ───────────────────────── -->
+<section class="section about about--page" id="about">
+  <div class="container two-col">
+    <div class="about-image-wrap fade-up">
+      <div class="about-img-placeholder"><span>GG</span></div>
+      <div class="about-badge travel">🌍 Multiple states in India</div>
+      <div class="about-badge fitness">💪 1 Year Lifting</div>
+    </div>
+    <div class="about-text fade-up">
+      <p class="section-label">About Me</p>
+      <h2>Wanderer by heart,<br>Athlete by discipline.</h2>
+      <p>Hey! I'm Grenston — a passionate traveller and fitness enthusiast who believes that the best version of yourself is forged both on the trail and in the gym.</p>
+      <p>I've trekked through misty mountains, surfed coastlines, eaten street food in forgotten alleys, and still found time to hit a evening workout after sunset. This blog is where I document all of it.</p>
+      <div class="stats-row">
+        <div class="stat"><span class="stat-num">25+</span><span class="stat-label">Countries</span></div>
+        <div class="stat"><span class="stat-num">100+</span><span class="stat-label">Workouts Logged</span></div>
+        <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Years Blogging</span></div>
+      </div>
+      <a href="{{ '/blog/' | relative_url }}" class="btn btn-primary">Read My Stories</a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── BLOG ───────────────────────── -->
+<section class="section blog-section" id="blog">
+  <div class="container">
+    <p class="section-label center">Blog</p>
+    <h2 class="section-title center">Latest Posts</h2>
+    <p class="section-sub center">Stories from the road and the gym — unfiltered.</p>
+    <div class="blog-grid">
+      {% for post in site.posts limit: 5 %}
+        {% assign is_fitness = false %}
+        {% for cat in post.categories %}
+          {% if cat == "Fitness" or cat == "Training" or cat == "Nutrition" %}
+            {% assign is_fitness = true %}
+          {% endif %}
+        {% endfor %}
+        <a href="{{ post.url | relative_url }}" class="blog-post fade-up {% if forloop.first %}featured{% endif %}">
+          <div class="blog-post-img" style="background: {{ post.card_color | default: 'linear-gradient(135deg,#a29bfe,#6c5ce7)' }}">
+            {{ post.hero_emoji | default: "✍️" }}
+          </div>
+          <div class="blog-post-body">
+            <div class="blog-meta">
+              {% for cat in post.categories %}
+                {% if cat == "Fitness" or cat == "Training" or cat == "Nutrition" %}
+                  <span class="blog-tag fitness-tag">{{ cat }}</span>
+                {% else %}
+                  <span class="blog-tag travel-tag">{{ cat }}</span>
+                {% endif %}
+              {% endfor %}
+              <span class="blog-date">{{ post.date | date: "%B %-d, %Y" }}</span>
+            </div>
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
+            <span class="read-more">Read more →</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+    <div class="center" style="margin-top: 3rem;">
+      <a href="{{ '/blog/' | relative_url }}" class="btn btn-outline">View All Posts →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── CONTACT ───────────────────────── -->
+<section class="section contact-section" id="contact">
+  <div class="container contact-inner">
+    <p class="section-label center">Contact</p>
+    <h2 class="section-title center">Let's Connect</h2>
+    <p class="section-sub center">Whether you want to swap travel tips, talk training, or just say hi — I'd love to hear from you.</p>
+    <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="_replyto" placeholder="your@email.com" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" placeholder="What's on your mind?">
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" placeholder="Tell me about your next adventure or your fitness goals…" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Send Message ✉️</button>
+    </form>
+    <div class="social-links">
+      {% if site.author.instagram %}<a href="https://instagram.com/{{ site.author.instagram }}" class="social-link" target="_blank" rel="noopener">Instagram</a>{% else %}<a href="#" class="social-link">Instagram</a>{% endif %}
+      {% if site.author.twitter %}<a href="https://twitter.com/{{ site.author.twitter }}" class="social-link" target="_blank" rel="noopener">Twitter / X</a>{% else %}<a href="#" class="social-link">Twitter / X</a>{% endif %}
+      {% if site.author.strava %}<a href="https://strava.com/athletes/{{ site.author.strava }}" class="social-link" target="_blank" rel="noopener">Strava</a>{% else %}<a href="#" class="social-link">Strava</a>{% endif %}
+      {% if site.author.linkedin %}<a href="https://linkedin.com/in/{{ site.author.linkedin }}" class="social-link" target="_blank" rel="noopener">LinkedIn</a>{% else %}<a href="#" class="social-link">LinkedIn</a>{% endif %}
+    </div>
+  </div>
+</section>

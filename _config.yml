@@ -1,0 +1,73 @@
+title: Grenston George
+tagline: "Traveller · Fitness Enthusiast · Writer"
+description: >-
+  Personal blog by Grenston George — stories from the trail, the gym, and every
+  corner of the world worth exploring.
+url: "https://gr-10.github.io"
+baseurl: ""
+
+author:
+  name: Grenston George
+  email: ""
+  twitter: ""
+  instagram: ""
+  strava: ""
+  linkedin: ""
+
+# Build settings
+theme: null          # custom theme — no minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+
+# GitHub Pages — use Actions-based deployment (supports Jekyll 4)
+# Set "Source" to "GitHub Actions" in repo Settings → Pages
+
+# Pagination
+paginate: 6
+paginate_path: "/blog/page:num/"
+
+# Collections
+permalink: /blog/:year/:month/:day/:title/
+
+# Markdown
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - README.md
+  - .bundle
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Grenston George"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# Categories used for filtering
+travel_categories:
+  - Travel
+  - Adventure
+  - Hiking
+fitness_categories:
+  - Fitness
+  - Training
+  - Nutrition

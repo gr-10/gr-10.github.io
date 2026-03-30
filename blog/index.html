@@ -1,0 +1,70 @@
+---
+layout: default
+title: Blog
+permalink: /blog/
+---
+
+<section class="page-hero">
+  <div class="container">
+    <p class="section-label center">The Blog</p>
+    <h1 class="section-title center">Stories from the Road & the Gym</h1>
+    <p class="section-sub center">Travel adventures, fitness guides, and everything in between.</p>
+    <div class="blog-filter center">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="travel">✈️ Travel</button>
+      <button class="filter-btn" data-filter="fitness">💪 Fitness</button>
+    </div>
+  </div>
+</section>
+
+<section class="section blog-list-section">
+  <div class="container">
+    <div class="blog-grid blog-grid--3" id="blogGrid">
+      {% for post in paginator.posts %}
+        {% assign is_fitness = false %}
+        {% for cat in post.categories %}
+          {% if cat == "Fitness" or cat == "Training" or cat == "Nutrition" %}
+            {% assign is_fitness = true %}
+          {% endif %}
+        {% endfor %}
+
+        <a href="{{ post.url | relative_url }}"
+           class="blog-post fade-up"
+           data-category="{% if is_fitness %}fitness{% else %}travel{% endif %}">
+          <div class="blog-post-img" style="background: {{ post.card_color | default: 'linear-gradient(135deg,#a29bfe,#6c5ce7)' }}">
+            {{ post.hero_emoji | default: "✍️" }}
+          </div>
+          <div class="blog-post-body">
+            <div class="blog-meta">
+              {% for cat in post.categories %}
+                {% if cat == "Fitness" or cat == "Training" or cat == "Nutrition" %}
+                  <span class="blog-tag fitness-tag">{{ cat }}</span>
+                {% else %}
+                  <span class="blog-tag travel-tag">{{ cat }}</span>
+                {% endif %}
+              {% endfor %}
+              <span class="blog-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+              {% if post.read_time %}<span class="blog-date">· {{ post.read_time }} min</span>{% endif %}
+            </div>
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
+            <span class="read-more">Read more →</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if paginator.total_pages > 1 %}
+    <nav class="pagination" aria-label="Blog pagination">
+      {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path | relative_url }}" class="btn btn-outline">← Newer</a>
+      {% endif %}
+      <span class="pagination-info">Page {{ paginator.page }} of {{ paginator.total_pages }}</span>
+      {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path | relative_url }}" class="btn btn-outline">Older →</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</section>

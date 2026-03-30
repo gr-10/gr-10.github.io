@@ -1,0 +1,71 @@
+---
+layout: default
+---
+
+{% assign tag_class = "travel-tag" %}
+{% if page.categories contains "Fitness" or page.categories contains "Training" or page.categories contains "Nutrition" %}
+  {% assign tag_class = "fitness-tag" %}
+{% endif %}
+
+{% assign hero_emoji = page.hero_emoji | default: "✈️" %}
+{% assign hero_gradient = page.hero_gradient | default: "linear-gradient(135deg, #a29bfe, #6c5ce7)" %}
+
+<header class="post-header" style="background: {{ page.header_bg | default: 'linear-gradient(160deg, #0f0f0f 0%, #1a1020 50%, #0d1a2e 100%)' }};">
+  <div class="post-header-bg">{{ hero_emoji }}</div>
+  <div class="container">
+    <a href="{{ '/blog/' | relative_url }}" class="post-back">← Back to Blog</a>
+    <div class="post-meta">
+      {% for cat in page.categories %}
+        {% if cat == "Fitness" or cat == "Training" or cat == "Nutrition" %}
+          <span class="blog-tag fitness-tag">{{ cat }}</span>
+        {% else %}
+          <span class="blog-tag travel-tag">{{ cat }}</span>
+        {% endif %}
+      {% endfor %}
+      <span class="blog-date">{{ page.date | date: "%B %-d, %Y" }}</span>
+      {% if page.read_time %}<span class="blog-date">· {{ page.read_time }} min read</span>{% endif %}
+    </div>
+    <h1>{{ page.title }}</h1>
+    {% if page.excerpt_custom %}<p class="post-lede">{{ page.excerpt_custom }}</p>{% endif %}
+  </div>
+</header>
+
+<article class="post-body">
+  <div class="container">
+    {{ content }}
+  </div>
+</article>
+
+<!-- Related posts -->
+{% assign related = site.posts | where_exp: "p", "p.url != page.url" | slice: 0, 3 %}
+{% if related.size > 0 %}
+<section class="section related-section">
+  <div class="container">
+    <p class="section-label center">Keep Reading</p>
+    <h2 class="section-title center">More Posts</h2>
+    <div class="blog-grid blog-grid--3">
+      {% for post in related %}
+      <a href="{{ post.url | relative_url }}" class="blog-post">
+        <div class="blog-post-img" style="background: {{ post.card_color | default: 'linear-gradient(135deg,#a29bfe,#6c5ce7)' }}">
+          {{ post.hero_emoji | default: "✍️" }}
+        </div>
+        <div class="blog-post-body">
+          <div class="blog-meta">
+            {% for cat in post.categories %}
+              {% if cat == "Fitness" or cat == "Training" or cat == "Nutrition" %}
+                <span class="blog-tag fitness-tag">{{ cat }}</span>
+              {% else %}
+                <span class="blog-tag travel-tag">{{ cat }}</span>
+              {% endif %}
+            {% endfor %}
+            <span class="blog-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+          </div>
+          <h3>{{ post.title }}</h3>
+          <span class="read-more">Read more →</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
