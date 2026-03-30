@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#d4e8e0"/>
+  <rect y="300" width="800" height="300" fill="#a0c4b0"/>
+  <rect y="280" width="800" height="30" fill="#e8f0ec" opacity=".6"/>
+  <ellipse cx="200" cy="255" rx="90" ry="45" fill="#e8f0ec" opacity=".75"/>
+  <ellipse cx="620" cy="235" rx="110" ry="55" fill="#e8f0ec" opacity=".75"/>
+  <text x="400" y="530" font-family="Georgia,serif" font-size="22" fill="#2d7a2d" text-anchor="middle">Morning mist over the valley</text>
+  <text x="400" y="558" font-family="Georgia,serif" font-size="15" fill="#5a7a5a" text-anchor="middle">Atlas Mountains, Morocco</text>
+</svg>

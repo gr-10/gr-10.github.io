@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
+  <rect width="600" height="800" fill="#e8d5b0"/>
+  <rect y="500" width="600" height="300" fill="#c8a870"/>
+  <circle cx="300" cy="180" r="100" fill="#f0c040" opacity=".8"/>
+  <text x="300" y="680" font-family="Georgia,serif" font-size="20" fill="#4a3010" text-anchor="middle">Golden hour in the old town</text>
+  <text x="300" y="710" font-family="Georgia,serif" font-size="14" fill="#7a5830" text-anchor="middle">Lisbon, Portugal</text>
+</svg>

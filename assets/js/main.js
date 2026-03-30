@@ -145,42 +145,65 @@ if (sections.length && navAnchors.length) {
   initTrack('shortsTrack');
 }());
 
-/* ── PHOTOS: filter + lightbox ───────────────────────────── */
+/* ── PHOTOS: tabs + filter + lightbox ────────────────────── */
 (function () {
-  const grid        = document.getElementById('photosGrid');
-  if (!grid) return;
+  const diaryGrid    = document.getElementById('diaryGrid');
+  const landscapeGrid = document.getElementById('landscapeGrid');
+  const portraitGrid  = document.getElementById('portraitGrid');
+  if (!diaryGrid && !landscapeGrid && !portraitGrid) return;
 
-  const filterBtns  = document.querySelectorAll('.photo-filter-btn');
-  const allItems    = () => Array.from(grid.querySelectorAll('.photo-item'));
+  // ─ Tab switching ─────────────────────────────────────────
+  document.querySelectorAll('.photos-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.photos-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.photos-panel').forEach(p => {
+        p.classList.remove('active');
+        p.hidden = true;
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      const panel = document.getElementById('tab-' + tab.dataset.tab);
+      if (panel) { panel.classList.add('active'); panel.hidden = false; }
+    });
+  });
 
-  // ─ Filter ──────────────────────────────────────────
-      filterBtns.forEach(btn => {
+  // ─ Per-grid filter buttons (diary tab only) ───────────────
+  document.querySelectorAll('.photo-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
+      const targetId = btn.dataset.target;
+      const grid     = document.getElementById(targetId);
+      if (!grid) return;
+      grid.closest('.photos-panel').querySelectorAll('.photo-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const f = btn.dataset.filter;
-      allItems().forEach(item => {
+      Array.from(grid.querySelectorAll('.photo-item')).forEach(item => {
         const tags    = item.dataset.tag ? item.dataset.tag.split(',').map(t => t.trim()) : [];
         const isKnown = tags.includes('Travel') || tags.includes('Fitness');
         const show    = f === 'all' || tags.includes(f) || (f === 'other' && !isKnown);
         item.classList.toggle('hidden', !show);
       });
     });
-  });  // ─ Lightbox ──────────────────────────────────────
-  const lightbox   = document.getElementById('lightbox');
-  const backdrop   = document.getElementById('lightboxBackdrop');
-  const lbImg      = document.getElementById('lightboxImg');
-  const lbCaption  = document.getElementById('lightboxCaption');
-  const closeBtn   = document.getElementById('lightboxClose');
-  const prevBtn    = document.getElementById('lightboxPrev');
-  const nextBtn    = document.getElementById('lightboxNext');
+  });
 
-  let visibleItems = [];
-  let currentIdx   = 0;
+  // ─ Lightbox ───────────────────────────────────────────────
+  const lightbox  = document.getElementById('lightbox');
+  const backdrop  = document.getElementById('lightboxBackdrop');
+  const lbImg     = document.getElementById('lightboxImg');
+  const lbCaption = document.getElementById('lightboxCaption');
+  const closeBtn  = document.getElementById('lightboxClose');
+  const prevBtn   = document.getElementById('lightboxPrev');
+  const nextBtn   = document.getElementById('lightboxNext');
+  if (!lightbox) return;
 
-  function openLightbox(idx) {
-    visibleItems = allItems().filter(i => !i.classList.contains('hidden'));
-    currentIdx   = idx;
+  let pool = [];
+  let currentIdx = 0;
+
+  function openLightbox(items, idx) {
+    pool       = items;
+    currentIdx = idx;
     showSlide(currentIdx);
     lightbox.classList.add('active');
     backdrop.classList.add('active');
@@ -197,39 +220,40 @@ if (sections.length && navAnchors.length) {
   }
 
   function showSlide(idx) {
-    const item   = visibleItems[idx];
+    const item = pool[idx];
     if (!item) return;
-    const src    = item.dataset.src;
-    const title  = item.dataset.title || '';
-    const date   = item.dataset.date  || '';
-    lbImg.src    = src;
-    lbImg.alt    = title;
-    lbCaption.textContent = title + (date ? '  ·  ' + date : '');
-    prevBtn.style.visibility = idx > 0 ? 'visible' : 'hidden';
-    nextBtn.style.visibility = idx < visibleItems.length - 1 ? 'visible' : 'hidden';
+    lbImg.src  = item.dataset.src || '';
+    lbImg.alt  = item.dataset.title || '';
+    const loc  = item.dataset.location ? ' · ' + item.dataset.location : '';
+    const date = item.dataset.date || '';
+    lbCaption.textContent = (item.dataset.title || '') + (date ? ' · ' + date : '') + loc;
+    prevBtn.style.visibility = idx > 0               ? 'visible' : 'hidden';
+    nextBtn.style.visibility = idx < pool.length - 1 ? 'visible' : 'hidden';
   }
 
-  // Open on click — prevent nav to post, open lightbox instead
-  grid.addEventListener('click', e => {
-    const link = e.target.closest('.photo-thumb-link');
-    if (!link) return;
-    e.preventDefault();
-    const item = link.closest('.photo-item');
-    const visible = allItems().filter(i => !i.classList.contains('hidden'));
-    const idx    = visible.indexOf(item);
-    if (idx !== -1) openLightbox(idx);
+  // Delegate clicks to all three grids
+  [diaryGrid, landscapeGrid, portraitGrid].forEach(grid => {
+    if (!grid) return;
+    grid.addEventListener('click', e => {
+      const btn  = e.target.closest('.photo-thumb-link');
+      if (!btn) return;
+      const item    = btn.closest('.photo-item');
+      const visible = Array.from(grid.querySelectorAll('.photo-item')).filter(i => !i.classList.contains('hidden'));
+      const idx     = visible.indexOf(item);
+      if (idx !== -1) openLightbox(visible, idx);
+    });
   });
 
   closeBtn.addEventListener('click', closeLightbox);
   backdrop.addEventListener('click', closeLightbox);
-  prevBtn.addEventListener('click', () => { currentIdx--; showSlide(currentIdx); });
-  nextBtn.addEventListener('click', () => { currentIdx++; showSlide(currentIdx); });
+  prevBtn.addEventListener('click',  () => { currentIdx = Math.max(0, currentIdx - 1); showSlide(currentIdx); });
+  nextBtn.addEventListener('click',  () => { currentIdx = Math.min(pool.length - 1, currentIdx + 1); showSlide(currentIdx); });
 
   document.addEventListener('keydown', e => {
     if (!lightbox.classList.contains('active')) return;
     if (e.key === 'Escape')     closeLightbox();
     if (e.key === 'ArrowLeft')  { currentIdx = Math.max(0, currentIdx - 1); showSlide(currentIdx); }
-    if (e.key === 'ArrowRight') { currentIdx = Math.min(visibleItems.length - 1, currentIdx + 1); showSlide(currentIdx); }
+    if (e.key === 'ArrowRight') { currentIdx = Math.min(pool.length - 1, currentIdx + 1); showSlide(currentIdx); }
   });
 }());
 
