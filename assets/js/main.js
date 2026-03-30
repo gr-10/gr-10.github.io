@@ -116,6 +116,35 @@ if (sections.length && navAnchors.length) {
   }, { passive: true });
 }());
 
+/* ── HORIZONTAL SCROLL TRACKS (entries + shorts on homepage) ─ */
+(function () {
+  function initTrack(trackId) {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+    const outer   = track.closest('.h-scroll-outer');
+    const prevBtn = outer && outer.querySelector('.h-scroll-prev');
+    const nextBtn = outer && outer.querySelector('.h-scroll-next');
+
+    function scrollAmount() {
+      const item = track.querySelector('.h-scroll-item');
+      return item ? item.offsetWidth + 20 : 280;
+    }
+
+    function syncBtns() {
+      if (prevBtn) prevBtn.disabled = track.scrollLeft <= 1;
+      if (nextBtn) nextBtn.disabled = track.scrollLeft + track.offsetWidth >= track.scrollWidth - 2;
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+    if (nextBtn) nextBtn.addEventListener('click', () => track.scrollBy({ left:  scrollAmount(), behavior: 'smooth' }));
+    track.addEventListener('scroll', syncBtns, { passive: true });
+    syncBtns();
+  }
+
+  initTrack('entriesTrack');
+  initTrack('shortsTrack');
+}());
+
 /* ── REELS: filter + play ─────────────────────────────────────
    Runs only on the /videos/ page                              */
 (function () {

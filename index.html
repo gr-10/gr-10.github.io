@@ -26,36 +26,103 @@ title: Home
 <!-- ───────────────────────── RECENT ENTRIES ───────────────────────── -->
 <section class="section diary-section" id="diary">
   <div class="container">
-    <p class="section-label center">Recent Entries</p>
-    <h2 class="section-title center">What I've Been Up To</h2>
-    <div class="diary-cards">
-      {% for post in site.posts limit: 3 %}
-      <a href="{{ post.url | relative_url }}" class="diary-card fade-up">
-        <div class="diary-card-cover">
-          {% if post.image %}
-            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy">
-          {% else %}
-            <div class="diary-card-cover-placeholder">{{ post.date | date: "%d" }}</div>
-          {% endif %}
-        </div>
-        <div class="diary-card-inner">
-          <div class="diary-card-date">
-            <span class="diary-day">{{ post.date | date: "%d" }}</span>
-            <span class="diary-month">{{ post.date | date: "%b" }}</span>
-            <span class="diary-year">{{ post.date | date: "%Y" }}</span>
-          </div>
-          <div class="diary-card-body">
-            {% if post.tag %}<span class="diary-tag">{{ post.tag }}</span>{% endif %}
-            <h3>{{ post.title }}</h3>
-            <p>{{ post.excerpt_custom | default: post.excerpt | strip_html | truncate: 120 }}</p>
-          </div>
-          <span class="diary-card-arrow">→</span>
-        </div>
-      </a>
-      {% endfor %}
+    <div class="home-section-head">
+      <div>
+        <p class="section-label">Recent Entries</p>
+        <h2 class="section-title">What I've Been Up To</h2>
+      </div>
+      <a href="{{ '/diary/' | relative_url }}" class="home-see-all">All entries →</a>
     </div>
-    <div class="center" style="margin-top: 2.5rem;">
-      <a href="{{ '/diary/' | relative_url }}" class="btn btn-outline">All Entries →</a>
+    <div class="h-scroll-outer">
+      <button class="h-scroll-btn h-scroll-prev" data-target="entriesTrack" aria-label="Previous">‹</button>
+      <div class="h-scroll-track" id="entriesTrack">
+        {% for post in site.posts limit: 3 %}
+        <a href="{{ post.url | relative_url }}" class="diary-card h-scroll-item fade-up">
+          <div class="diary-card-cover">
+            {% if post.image %}
+              <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy">
+            {% else %}
+              <div class="diary-card-cover-placeholder">{{ post.date | date: "%d" }}</div>
+            {% endif %}
+          </div>
+          <div class="diary-card-inner">
+            <div class="diary-card-date">
+              <span class="diary-day">{{ post.date | date: "%d" }}</span>
+              <span class="diary-month">{{ post.date | date: "%b" }}</span>
+              <span class="diary-year">{{ post.date | date: "%Y" }}</span>
+            </div>
+            <div class="diary-card-body">
+              {% if post.tag %}<span class="diary-tag">{{ post.tag }}</span>{% endif %}
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.excerpt_custom | default: post.excerpt | strip_html | truncate: 120 }}</p>
+            </div>
+            <span class="diary-card-arrow">→</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <button class="h-scroll-btn h-scroll-next" data-target="entriesTrack" aria-label="Next">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── RECENT SHORTS ───────────────────────── -->
+<section class="section shorts-section" id="shorts">
+  <div class="container">
+    <div class="home-section-head">
+      <div>
+        <p class="section-label">Recent Shorts</p>
+        <h2 class="section-title">Watch</h2>
+      </div>
+      <a href="{{ '/shorts/' | relative_url }}" class="home-see-all">All shorts →</a>
+    </div>
+    <div class="h-scroll-outer">
+      <button class="h-scroll-btn h-scroll-prev" data-target="shortsTrack" aria-label="Previous">‹</button>
+      <div class="h-scroll-track" id="shortsTrack">
+        {% for video in site.data.videos limit: 3 %}
+        <div class="reel-card h-scroll-item">
+          <div class="reel-player-wrap">
+            <div class="reel-thumbnail">
+              <img
+                src="https://img.youtube.com/vi/{{ video.id }}/maxresdefault.jpg"
+                alt="{{ video.title }}"
+                class="reel-thumb-img"
+                loading="lazy"
+                onerror="this.src='https://img.youtube.com/vi/{{ video.id }}/hqdefault.jpg'"
+              >
+              <button class="reel-play-btn" aria-label="Play {{ video.title }}">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="reel-iframe-wrap" style="display:none;">
+              <iframe
+                class="reel-iframe"
+                src=""
+                data-src="https://www.youtube.com/embed/{{ video.id }}?autoplay=1&rel=0&playsinline=1&loop=1&playlist={{ video.id }}"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+          <div class="reel-info">
+            <div class="reel-tags">
+              {% for t in video.tag %}<span class="diary-tag">{{ t }}</span>{% endfor %}
+              {% if video.location %}<span class="reel-location"><svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>{{ video.location }}</span>{% endif %}
+            </div>
+            <h3 class="reel-title">{{ video.title }}</h3>
+            <p class="reel-date">{{ video.date | date: "%d %b %Y" }}</p>
+            <p class="reel-caption">{{ video.caption }}</p>
+            {% if video.mood %}
+            <div class="reel-moods">
+              {% for m in video.mood %}<span class="entry-mood">{{ m }}</span>{% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="h-scroll-btn h-scroll-next" data-target="shortsTrack" aria-label="Next">›</button>
     </div>
   </div>
 </section>
