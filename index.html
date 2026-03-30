@@ -8,13 +8,13 @@ title: Home
   <div class="container two-col">
     <div class="about-image-wrap fade-up">
       {% if site.author.avatar %}
-        <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" class="about-avatar">
+        <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" class="about-avatar about-avatar--clickable" data-fullsrc="{{ site.author.avatar | relative_url }}" id="aboutAvatar">
       {% else %}
         <div class="about-img-placeholder"><span>GG</span></div>
       {% endif %}
     </div>
     <div class="about-text fade-up">
-      <p class="section-label">Hey, I'm Grenston George</p>
+      <p class="section-label" id="aboutTitle">Hey, I'm Grenston George</p>
       <h2>This is where I showcase my life.</h2>
       <p>I write here every day — or at least I try to. I post short videos. Some days it's about a place I visited. Some days it's a workout, a meal, a random thought at 11 pm, or something that made me laugh on the commute.</p>
       <p>I am a beginner level short video editor.</p>
@@ -27,6 +27,16 @@ title: Home
     </div>
   </div>
 </section>
+
+<!-- Avatar lightbox -->
+<div class="lightbox-backdrop" id="avatarBackdrop"></div>
+<div class="lightbox" id="avatarLightbox" aria-hidden="true" aria-modal="true" role="dialog">
+  <button class="lightbox-close" id="avatarClose" aria-label="Close">×</button>
+  <div class="lightbox-img-wrap">
+    <img id="avatarLightboxImg" class="lightbox-img" src="" alt="{{ site.author.name }}">
+  </div>
+  <p class="lightbox-caption">{{ site.author.name }}</p>
+</div>
 
 <!-- ───────────────────────── RECENT ENTRIES ───────────────────────── -->
 <section class="section diary-section" id="diary">
@@ -128,74 +138,6 @@ title: Home
         {% endfor %}
       </div>
       <button class="h-scroll-btn h-scroll-next" data-target="shortsTrack" aria-label="Next">›</button>
-    </div>
-  </div>
-</section>
-
-<!-- ───────────────────────── SAY HELLO ───────────────────────── -->
-<section class="section contact-section" id="contact">
-  <div class="container">
-    <p class="section-label center">Say Hello</p>
-    <h2 class="section-title center">Find Me Online</h2>
-    <p class="section-sub center">Follow along on Instagram, track my runs on Strava, or drop me an email.</p>
-    <div class="social-cards">
-
-      <!-- Instagram -->
-      <a
-        href="https://www.instagram.com/{{ site.author.instagram }}/"
-        class="social-card social-card--instagram"
-        target="_blank" rel="noopener"
-        aria-label="Instagram">
-        <div class="social-card-icon">
-          <!-- Instagram SVG logo -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="36" height="36" aria-hidden="true">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-          </svg>
-        </div>
-        <div class="social-card-body">
-          <span class="social-card-name">Instagram</span>
-          <span class="social-card-handle">{% if site.author.instagram %}@{{ site.author.instagram }}{% else %}@grenston{% endif %}</span>
-        </div>
-        <span class="social-card-arrow">→</span>
-      </a>
-
-      <!-- Strava -->
-      <a
-        href="https://www.strava.com/athletes/{{ site.author.strava }}/"
-        class="social-card social-card--strava"
-        target="_blank" rel="noopener"
-        aria-label="Strava">
-        <div class="social-card-icon">
-          <!-- Strava SVG logo -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="36" height="36" aria-hidden="true">
-            <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/>
-          </svg>
-        </div>
-        <div class="social-card-body">
-          <span class="social-card-name">Strava</span>
-          <span class="social-card-handle">{% if site.author.strava %}Follow my runs{% else %}Follow my runs{% endif %}</span>
-        </div>
-        <span class="social-card-arrow">→</span>
-      </a>
-
-      <!-- Email -->
-      <a
-        href="mailto:grenston.ks@gmail.com"
-        class="social-card social-card--email"
-        aria-label="Email">
-        <div class="social-card-icon">
-          <!-- Envelope SVG -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="36" height="36" aria-hidden="true">
-            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
-        </div>
-        <div class="social-card-body">
-          <span class="social-card-name">Email</span>
-          <span class="social-card-handle">grenston.ks@gmail.com</span>
-        </div>
-        <span class="social-card-arrow">→</span>
-      </a>
-
     </div>
   </div>
 </section>

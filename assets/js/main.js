@@ -2,6 +2,20 @@
    assets/js/main.js — Grenston George Personal Blog
    ============================================================ */
 
+// ── Bottom tab bar — highlight active tab ────────────────────
+(function () {
+  const path = window.location.pathname;
+  document.querySelectorAll('.bottom-tab').forEach(tab => {
+    const page = tab.dataset.page;
+    const isActive =
+      (page === 'home'   && (path === '/' || path === '/index.html')) ||
+      (page === 'diary'  && path.startsWith('/diary')) ||
+      (page === 'shorts' && path.startsWith('/shorts')) ||
+      (page === 'photos' && path.startsWith('/photos'));
+    if (isActive) tab.classList.add('active');
+  });
+}());
+
 // ── Navbar scroll effect ──────────────────────────────────────
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -10,31 +24,65 @@ if (navbar) {
   window.addEventListener('scroll', onScroll, { passive: true });
 }
 
-// ── Mobile nav toggle ─────────────────────────────────────────
-const navToggle = document.getElementById('navToggle');
-const navLinks  = document.getElementById('navLinks');
+// ── Bio popup (logo click) ───────────────────────────────────
+(function () {
+  const bioTrigger = document.getElementById('bioTrigger');
+  const bioPopup   = document.getElementById('bioPopup');
+  if (!bioTrigger || !bioPopup) return;
 
-if (navToggle && navLinks) {
-  navToggle.addEventListener('click', () => {
-    const isOpen = navLinks.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', String(isOpen));
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+  function positionPopup() {
+    const rect = bioTrigger.getBoundingClientRect();
+    bioPopup.style.top  = (rect.bottom + 8) + 'px';
+    bioPopup.style.left = rect.left + 'px';
+  }
+
+  function openBio() {
+    positionPopup();
+    bioPopup.hidden = false;
+    bioTrigger.setAttribute('aria-expanded', 'true');
+  }
+  function closeBio() {
+    bioPopup.hidden = true;
+    bioTrigger.setAttribute('aria-expanded', 'false');
+  }
+
+  bioTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    bioPopup.hidden ? openBio() : closeBio();
+  });
+  document.addEventListener('click', (e) => {
+    if (!bioPopup.contains(e.target) && e.target !== bioTrigger) closeBio();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeBio();
+  });
+}());
+
+// ── Say Hello dropdown ───────────────────────────────────────
+(function () {
+  const trigger = document.getElementById('helloTrigger');
+  const menu    = document.getElementById('helloMenu');
+  if (!trigger || !menu) return;
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = menu.hidden === false;
+    menu.hidden = isOpen;
+    trigger.setAttribute('aria-expanded', String(!isOpen));
   });
 
-  navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      navLinks.classList.remove('open');
-      document.body.style.overflow = '';
-    });
+  document.addEventListener('click', () => {
+    menu.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
   });
 
-  document.addEventListener('click', e => {
-    if (!navbar.contains(e.target)) {
-      navLinks.classList.remove('open');
-      document.body.style.overflow = '';
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      menu.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
     }
   });
-}
+}());
 
 // ── Scroll-triggered fade-up animations ──────────────────────
 const observer = new IntersectionObserver((entries) => {
@@ -306,5 +354,76 @@ if (sections.length && navAnchors.length) {
       iframeWrap.style.display = 'block';
       thumbWrap.style.display  = 'none';
     });
+  });
+}());
+
+// ── Avatar lightbox (homepage about section) ─────────────────
+(function () {
+  const avatar   = document.getElementById('aboutAvatar');
+  const title    = document.getElementById('aboutTitle');
+  const backdrop = document.getElementById('avatarBackdrop');
+  const lb       = document.getElementById('avatarLightbox');
+  const lbImg    = document.getElementById('avatarLightboxImg');
+  const closeBtn = document.getElementById('avatarClose');
+  if (!avatar || !lb) return;
+
+  function openAvatarLb() {
+    lbImg.src = avatar.dataset.fullsrc;
+    backdrop.classList.add('active');
+    lb.classList.add('active');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeAvatarLb() {
+    backdrop.classList.remove('active');
+    lb.classList.remove('active');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  avatar.addEventListener('click', openAvatarLb);
+  if (title) { title.addEventListener('click', openAvatarLb); title.style.cursor = 'pointer'; }
+  closeBtn.addEventListener('click', closeAvatarLb);
+  backdrop.addEventListener('click', closeAvatarLb);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAvatarLb();
+  });
+}());
+
+// ── Avatar lightbox (about page) ─────────────────────────────
+(function () {
+  const avatar   = document.getElementById('aboutAvatar');
+  const title    = document.getElementById('aboutTitle');
+  const backdrop = document.getElementById('avatarBackdrop');
+  const lb       = document.getElementById('avatarLightbox');
+  const lbImg    = document.getElementById('avatarLightboxImg');
+  const closeBtn = document.getElementById('avatarClose');
+  if (!avatar || !lb) return;
+
+  function openAvatarLb() {
+    lbImg.src = avatar.dataset.fullsrc;
+    backdrop.classList.add('active');
+    lb.classList.add('active');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeAvatarLb() {
+    backdrop.classList.remove('active');
+    lb.classList.remove('active');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  avatar.addEventListener('click', openAvatarLb);
+  if (title) title.addEventListener('click', openAvatarLb);
+  if (title) title.style.cursor = 'pointer';
+  closeBtn.addEventListener('click', closeAvatarLb);
+  backdrop.addEventListener('click', closeAvatarLb);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAvatarLb();
   });
 }());

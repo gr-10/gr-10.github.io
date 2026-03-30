@@ -8,10 +8,19 @@ baseurl: ""
 
 author:
   name: Grenston George
-  email: ""
+  email: "grenston.ks@gmail.com"
   avatar: /assets/images/profile.jpg
   instagram: "gr10.life"
   strava: "2047574881"
+  age: 29
+  relationship: "In a relationship"
+  hobbies:
+    - Travel
+    - Photography
+    - Fitness
+    - Short-form video
+  bio: >-
+    Be Yourself.
 
 # Build settings
 theme: null          # custom theme — no minima
