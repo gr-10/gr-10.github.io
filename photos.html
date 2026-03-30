@@ -14,13 +14,13 @@ permalink: /photos/
 
   <!-- TAB NAV -->
   <div class="photos-tabs" role="tablist">
-    <button class="photos-tab active" data-tab="diary"      role="tab" aria-selected="true">From the Diary</button>
+    <button class="photos-tab active" data-tab="portraits"  role="tab" aria-selected="true">Portraits</button>
     <button class="photos-tab"        data-tab="landscapes" role="tab" aria-selected="false">Landscapes</button>
-    <button class="photos-tab"        data-tab="portraits"  role="tab" aria-selected="false">Portraits</button>
+    <button class="photos-tab"        data-tab="diary"      role="tab" aria-selected="false">From the Diary</button>
   </div>
 
   <!-- TAB 1: From the Diary -->
-  <div class="photos-panel active" id="tab-diary" role="tabpanel">
+  <div class="photos-panel" id="tab-diary" role="tabpanel" hidden>
     <div class="photos-panel-filter">
       <button class="photo-filter-btn active" data-target="diaryGrid" data-filter="all">All</button>
       {% assign all_tags = site.posts | map: "tag" | uniq | sort %}
@@ -83,7 +83,7 @@ permalink: /photos/
   </div>
 
   <!-- TAB 3: Portraits -->
-  <div class="photos-panel" id="tab-portraits" role="tabpanel" hidden>
+  <div class="photos-panel active" id="tab-portraits" role="tabpanel">
     <div class="photos-grid photos-grid--portraits" id="portraitGrid">
       {% for photo in site.data.photos %}{% if photo.aspect == "portrait" %}
       <div class="photo-item"
