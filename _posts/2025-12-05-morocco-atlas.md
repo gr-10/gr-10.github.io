@@ -5,7 +5,6 @@ date: 2025-12-05
 tag: Travel
 mood: "awestruck 🌄"
 excerpt_custom: "Marrakech medinas, Sahara camping, and standing on the roof of North Africa."
-image: /assets/images/headers/morocco-atlas.svg
 gallery:
   - "Portraits/IMG_4759.JPG"
   - "Landscapes/IMG_4688 2.JPG"

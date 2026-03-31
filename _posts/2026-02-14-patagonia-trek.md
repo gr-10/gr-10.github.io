@@ -5,7 +5,6 @@ date: 2026-02-14
 tag: Travel
 mood: "humbled 🏔️"
 excerpt_custom: "Five days on the W-Trek. Burning quads, incredible views, and a lot of self-reflection."
-image: /assets/images/headers/patagonia-trek.svg
 gallery:
   - "Portraits/IMG_4759.JPG"
   - "Landscapes/IMG_4688 2.JPG"
