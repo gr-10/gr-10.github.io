@@ -26,7 +26,7 @@ layout: default
           <div class="post-gallery-track" id="galleryTrack">
             {% for img in page.gallery %}
             <div class="post-gallery-slide">
-              <img src="{{ img | relative_url }}" alt="{{ page.title }} — photo {{ forloop.index }}" loading="lazy">
+              <img src="{{ site.imagekit_url }}/{{ img }}" alt="{{ page.title }} — photo {{ forloop.index }}" loading="lazy">
             </div>
             {% endfor %}
           </div>

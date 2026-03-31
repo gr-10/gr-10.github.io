@@ -1,27 +1,15 @@
-# Random photos — independent of diary posts
-# Each entry references a file in assets/images/random/
+# Photos hosted on ImageKit.io (https://ik.imagekit.io/gr10)
+# Use short paths: Portraits/filename.jpg or Landscapes/filename.jpg
 # aspect: portrait (3:4) | landscape (4:3)
 
-- file: sample-portrait-01.svg
+- url: "Portraits/IMG_4759.JPG"
   aspect: portrait
-  caption: "Golden hour in the old town."
-  date: 2026-03-15
-  location: "Lisbon, Portugal"
+  caption: ""
+  date: 2026-03-31
+  location: ""
 
-- file: sample-landscape-01.svg
+- url: "Landscapes/IMG_4688 2.JPG"
   aspect: landscape
-  caption: "The road stretching out to nowhere in particular."
-  date: 2026-03-10
-  location: "Alentejo, Portugal"
-
-- file: sample-portrait-02.svg
-  aspect: portrait
-  caption: "A quiet corner I found between meetings."
-  date: 2026-02-28
-  location: "Tokyo, Japan"
-
-- file: sample-landscape-02.svg
-  aspect: landscape
-  caption: "Morning mist over the valley."
-  date: 2026-02-20
-  location: "Atlas Mountains, Morocco"
+  caption: ""
+  date: 2026-03-31
+  location: ""

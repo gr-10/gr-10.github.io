@@ -5,6 +5,7 @@ description: >-
   thoughts, and everything in between.
 url: "https://gr-10.github.io"
 baseurl: ""
+imagekit_url: "https://ik.imagekit.io/gr10"
 
 author:
   name: Grenston George
