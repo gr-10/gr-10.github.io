@@ -1275,18 +1275,19 @@ a { color: inherit; text-decoration: none; }
 .hud-item strong { color: var(--clr-accent); }
 
 /* ── SUMMIT CLIMBER GAME ────────────────────────────────────────────────────── */
-.climb-page {
+.ski-page {
   width: 100%;
-  height: calc(100dvh - 60px - env(safe-area-inset-bottom, 0px));
+  height: calc(100dvh - 62px - env(safe-area-inset-bottom, 0px));
+  margin-top: 62px; /* push below fixed navbar */
   overflow: hidden;
   display: block;
   position: relative;
-  background: #a8d8ea;
+  background: #e8f4f8;
 }
 
 @media (min-width: 701px) {
   /* desktop: show message card, hide the game entirely */
-  .climb-page {
+  .ski-page {
     height: auto;
     min-height: calc(100vh - 62px);
     overflow: visible;
@@ -1294,18 +1295,18 @@ a { color: inherit; text-decoration: none; }
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 6rem 1.5rem 3rem; /* 6rem top to clear fixed navbar */
+    padding: 3rem 1.5rem;
   }
-  .climb-page .rotate-warning,
-  .climb-page .climb-screen,
-  .climb-page .climb-hud,
-  .climb-page #climbCanvas { display: none !important; }
-  .climb-desktop-msg { display: flex; }
+  .ski-page .rotate-warning,
+  .ski-page .ski-screen,
+  .ski-page .ski-hud,
+  .ski-page #skiCanvas { display: none !important; }
+  .ski-desktop-msg { display: flex !important; }
 }
 
-/* desktop message card */
-.climb-desktop-msg {
-  display: none; /* shown only on desktop via media query above */
+/* desktop message card — hidden on mobile, shown on desktop via media query */
+.ski-desktop-msg {
+  display: none;
   flex-direction: column;
   align-items: center;
   gap: 1.2rem;
@@ -1317,24 +1318,24 @@ a { color: inherit; text-decoration: none; }
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.06);
 }
-.climb-desktop-msg .msg-icon {
+.ski-desktop-msg .msg-icon {
   font-size: 3rem;
   line-height: 1;
 }
-.climb-desktop-msg h2 {
+.ski-desktop-msg h2 {
   font-family: var(--font-display);
   font-size: 1.5rem;
   color: var(--clr-text);
   margin: 0;
   line-height: 1.25;
 }
-.climb-desktop-msg p {
+.ski-desktop-msg p {
   font-size: 0.92rem;
   color: var(--clr-muted);
   margin: 0;
   line-height: 1.6;
 }
-.climb-desktop-msg .msg-link {
+.ski-desktop-msg .msg-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -1348,9 +1349,9 @@ a { color: inherit; text-decoration: none; }
   transition: opacity 0.2s, transform 0.18s;
   margin-top: 0.4rem;
 }
-.climb-desktop-msg .msg-link:hover { opacity: 0.86; transform: scale(1.04); }
+.ski-desktop-msg .msg-link:hover { opacity: 0.86; transform: scale(1.04); }
 
-.climb-wrapper {
+.ski-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
@@ -1359,14 +1360,14 @@ a { color: inherit; text-decoration: none; }
   touch-action: none;
 }
 
-#climbCanvas {
+#skiCanvas {
   display: block;
   width: 100%;
   height: 100%;
 }
 
 /* screens */
-.climb-screen {
+.ski-screen {
   position: absolute;
   inset: 0;
   display: flex;
@@ -1377,9 +1378,9 @@ a { color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(10px);
   z-index: 10;
 }
-.climb-screen.hidden { display: none; }
+.ski-screen.hidden { display: none; }
 
-.climb-screen-inner {
+.ski-screen-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1388,7 +1389,7 @@ a { color: inherit; text-decoration: none; }
   padding: 0 1.5rem;
 }
 
-.climb-eyebrow {
+.ski-eyebrow {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -1397,7 +1398,7 @@ a { color: inherit; text-decoration: none; }
   margin: 0;
 }
 
-.climb-title {
+.ski-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(2.4rem, 12vw, 3.5rem);
   font-weight: 700;
@@ -1406,13 +1407,13 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.05;
 }
 
-.climb-subtitle {
+.ski-subtitle {
   font-size: 0.95rem;
   color: rgba(255,255,255,0.6);
   margin: 0;
 }
 
-.climb-hint {
+.ski-hint {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -1420,7 +1421,7 @@ a { color: inherit; text-decoration: none; }
   max-width: 240px;
 }
 
-.climb-hint-row {
+.ski-hint-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1431,14 +1432,14 @@ a { color: inherit; text-decoration: none; }
   padding: 0.45rem 0.9rem;
 }
 
-.climb-hint-key {
+.ski-hint-key {
   font-weight: 700;
   color: #7ec880;
   font-size: 0.78rem;
   letter-spacing: 0.05em;
 }
 
-.climb-btn {
+.ski-btn {
   background: #2d7a2d;
   color: #fff;
   border: none;
@@ -1452,9 +1453,9 @@ a { color: inherit; text-decoration: none; }
   margin-top: 0.4rem;
   letter-spacing: 0.02em;
 }
-.climb-btn:hover, .climb-btn:active { opacity: 0.84; transform: scale(1.04); }
+.ski-btn:hover, .ski-btn:active { opacity: 0.84; transform: scale(1.04); }
 
-.climb-over-title {
+.ski-over-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.6rem, 8vw, 2.4rem);
   font-weight: 700;
@@ -1462,20 +1463,20 @@ a { color: inherit; text-decoration: none; }
   margin: 0;
 }
 
-.climb-over-stats {
+.ski-over-stats {
   display: flex;
   gap: 2rem;
   align-items: flex-end;
 }
 
-.climb-stat {
+.ski-stat {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.15rem;
 }
 
-.climb-stat-val {
+.ski-stat-val {
   font-family: 'Playfair Display', serif;
   font-size: 2.6rem;
   font-weight: 900;
@@ -1483,9 +1484,9 @@ a { color: inherit; text-decoration: none; }
   line-height: 1;
 }
 
-.climb-stat--best .climb-stat-val { font-size: 2rem; color: rgba(255,255,255,0.45); }
+.ski-stat--best .ski-stat-val { font-size: 2rem; color: rgba(255,255,255,0.45); }
 
-.climb-stat-label {
+.ski-stat-label {
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -1494,7 +1495,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* HUD */
-.climb-hud {
+.ski-hud {
   position: absolute;
   top: 0.8rem;
   left: 50%;
@@ -1514,8 +1515,8 @@ a { color: inherit; text-decoration: none; }
   z-index: 5;
   white-space: nowrap;
 }
-.climb-hud.hidden { display: none; }
-.climb-hud strong { color: #7ec880; }
+.ski-hud.hidden { display: none; }
+.ski-hud strong { color: #7ec880; }
 
 /* rotate warning */
 .rotate-warning {
@@ -1561,11 +1562,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* mobile tab — only in bottom tab bar */
-.bottom-tab--climb-only {
+.bottom-tab--ski-only {
   display: flex;
 }
 @media (min-width: 701px) {
-  .bottom-tab--climb-only { display: none; }
+  .bottom-tab--ski-only { display: none; }
 }
 
 /* game embedded on homepage */
@@ -1584,10 +1585,7 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* hide standalone game page on mobile — game is desktop only */
-@media (max-width: 700px) {
-  .game-page { display: none; }
-}
+/* .ski-page is mobile-only — never hide it on mobile */
 
 /* ── FOOTER (desktop only) ──────────────────────────────────────────────────── */
 .site-footer { display: none; }
