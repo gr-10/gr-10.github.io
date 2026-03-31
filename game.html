@@ -1,0 +1,454 @@
+---
+layout: default
+title: "Vertical Ski"
+permalink: /game/
+---
+
+<div class="ski-page" id="skiPage">
+
+  <!-- Desktop-only message -->
+  <div class="ski-desktop-msg">
+    <div class="msg-icon">📱</div>
+    <h2>Vertical Ski is only available on mobile portrait mode</h2>
+    <p>Designed for touch screens held upright.<br>Grab your phone and visit this page to play!</p>
+    <a href="/#gameSection" class="msg-link">🏃 Play Trail Runner</a>
+  </div>
+
+  <!-- Rotate warning -->
+  <div class="rotate-warning" id="rotateWarning">
+    <div class="rotate-warning-inner">
+      <div class="rotate-icon">📱</div>
+      <p class="rotate-title">Rotate your phone</p>
+      <p class="rotate-sub">This game is portrait only</p>
+    </div>
+  </div>
+
+  <!-- Start Screen -->
+  <div class="ski-screen" id="skiStart">
+    <div class="ski-screen-inner">
+      <p class="ski-eyebrow">Mobile Game</p>
+      <h1 class="ski-title">Vertical<br>Ski</h1>
+      <p class="ski-subtitle">Dodge the trees. Go fast. Don't crash.</p>
+      <div class="ski-hint">
+        <div class="ski-hint-row"><span class="ski-hint-key">HOLD LEFT</span><span>steer left</span></div>
+        <div class="ski-hint-row"><span class="ski-hint-key">HOLD RIGHT</span><span>steer right</span></div>
+        <div class="ski-hint-row"><span class="ski-hint-key">🌲 TREES</span><span>instant wipeout</span></div>
+        <div class="ski-hint-row"><span class="ski-hint-key">�� GATES</span><span>ski through for speed boost</span></div>
+        <div class="ski-hint-row"><span class="ski-hint-key">⚡ SPEED</span><span>increases over time</span></div>
+      </div>
+      <button class="ski-btn" id="skiStartBtn">Drop In ↓</button>
+    </div>
+  </div>
+
+  <!-- Game Over -->
+  <div class="ski-screen hidden" id="skiOver">
+    <div class="ski-screen-inner">
+      <p class="ski-eyebrow" id="skiOverLabel">💥 Wipeout!</p>
+      <h2 class="ski-over-title" id="skiOverTitle">0m skied</h2>
+      <div class="ski-over-stats">
+        <div class="ski-stat">
+          <span class="ski-stat-val" id="skiFinal">0</span>
+          <span class="ski-stat-label">metres</span>
+        </div>
+        <div class="ski-stat ski-stat--best">
+          <span class="ski-stat-val" id="skiBestVal">0</span>
+          <span class="ski-stat-label">best</span>
+        </div>
+      </div>
+      <button class="ski-btn" id="skiRestartBtn">Go Again ↓</button>
+    </div>
+  </div>
+
+  <!-- HUD -->
+  <div class="ski-hud hidden" id="skiHud">
+    <span>🎿 <strong id="skiHeightDisp">0</strong>m</span>
+    <span>🏆 <strong id="skiBestDisp">0</strong>m</span>
+  </div>
+
+  <canvas id="skiCanvas"></canvas>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const canvas = document.getElementById('skiCanvas');
+  const ctx    = canvas.getContext('2d');
+  const page   = document.getElementById('skiPage');
+
+  const startScreen = document.getElementById('skiStart');
+  const overScreen  = document.getElementById('skiOver');
+  const hud         = document.getElementById('skiHud');
+  const startBtn    = document.getElementById('skiStartBtn');
+  const restartBtn  = document.getElementById('skiRestartBtn');
+  const distDisp    = document.getElementById('skiHeightDisp');
+  const bestDisp    = document.getElementById('skiBestDisp');
+  const finalEl     = document.getElementById('skiFinal');
+  const bestValEl   = document.getElementById('skiBestVal');
+  const overLabel   = document.getElementById('skiOverLabel');
+  const overTitle   = document.getElementById('skiOverTitle');
+
+  let W, H;
+  let state = 'idle';
+  let best  = parseInt(localStorage.getItem('skiiBest') || '0', 10);
+  let raf;
+
+  bestDisp.textContent  = best;
+  bestValEl.textContent = best;
+
+  // PALETTE
+  const C = {
+    snowTop:   '#e8f4f8',
+    snowBot:   '#c8e0ec',
+    shadow:    'rgba(100,140,180,0.18)',
+    tree:      '#1a5c1a',
+    treeTrunk: '#6b4c2a',
+    treeDark:  '#0f3d0f',
+    treeSnow:  'rgba(255,255,255,0.75)',
+    rock:      '#7a7a8a',
+    rockHi:    '#a0a0b4',
+    gate:      '#e53935',
+    gatePost:  '#fafafa',
+    skier:     '#1565c0',
+    suit:      '#1e88e5',
+    skin:      '#ffcc80',
+    goggle:    '#f57f17',
+    ski:       '#0d47a1',
+    pole:      '#90a4ae',
+    track1:    'rgba(160,200,230,0.55)',
+    track2:    'rgba(140,180,215,0.35)',
+  };
+
+  // GAME STATE
+  let scrollY   = 0;
+  let speed     = 3.2;
+  let dist      = 0;
+  let skierX    = 0;
+  let velX      = 0;
+  let steerDir  = 0;
+  let alive     = true;
+  let crashTimer = 0;
+  let puffs     = [];
+  let trackL    = [], trackR = [];
+  let objects   = [];
+  let nextObjY  = 0;
+
+  const OBJ_TREE = 'tree';
+  const OBJ_ROCK = 'rock';
+  const OBJ_GATE = 'gate';
+
+  function spawnObjects() {
+    const viewBot = scrollY + H;
+    while (nextObjY < viewBot + H * 1.5) {
+      const gap = Math.max(60, 110 + Math.random() * 160 - Math.min(dist / 80, 50));
+      nextObjY += gap;
+
+      const r = Math.random();
+      if (r < 0.55) {
+        const x = 30 + Math.random() * (W - 60);
+        objects.push({ type: OBJ_TREE, x, worldY: nextObjY, size: 22 + Math.random() * 14, hit: false });
+        if (Math.random() < 0.4) {
+          const ox = x + (Math.random() < 0.5 ? -1 : 1) * (28 + Math.random() * 28);
+          if (ox > 20 && ox < W - 20)
+            objects.push({ type: OBJ_TREE, x: ox, worldY: nextObjY + Math.random() * 28, size: 18 + Math.random() * 12, hit: false });
+        }
+      } else if (r < 0.75) {
+        objects.push({ type: OBJ_ROCK, x: 30 + Math.random() * (W - 60), worldY: nextObjY, size: 12 + Math.random() * 10, hit: false });
+      } else {
+        const cx   = W / 2 + (Math.random() - 0.5) * (W * 0.35);
+        const half = 30 + Math.random() * 20;
+        objects.push({ type: OBJ_GATE, cx, half, worldY: nextObjY, scored: false, hit: false });
+      }
+    }
+    objects = objects.filter(o => o.worldY > scrollY - 200);
+  }
+
+  function recordTrack() {
+    const sx = skierX, sy = H * 0.38;
+    trackL.push({ x: sx - 5, worldY: scrollY + sy });
+    trackR.push({ x: sx + 5, worldY: scrollY + sy });
+    if (trackL.length > 300) { trackL.shift(); trackR.shift(); }
+  }
+
+  function drawBg() {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, C.snowTop);
+    g.addColorStop(1, C.snowBot);
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(180,220,240,0.2)';
+    ctx.lineWidth   = 1;
+    for (let i = 0; i < 6; i++) {
+      const y = ((scrollY * 0.4 + i * (H / 6)) % H + H) % H;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.bezierCurveTo(W * 0.3, y - 10, W * 0.7, y + 10, W, y);
+      ctx.stroke();
+    }
+  }
+
+  function drawTracks() {
+    if (trackL.length < 2) return;
+    [trackL, trackR].forEach((track, pass) => {
+      ctx.beginPath();
+      ctx.strokeStyle = pass === 0 ? C.track1 : C.track2;
+      ctx.lineWidth   = 2.5;
+      ctx.lineCap     = 'round';
+      track.forEach((pt, i) => {
+        const sy = pt.worldY - scrollY;
+        if (i === 0) ctx.moveTo(pt.x, sy);
+        else         ctx.lineTo(pt.x, sy);
+      });
+      ctx.stroke();
+    });
+  }
+
+  function drawTree(x, sy, size) {
+    ctx.fillStyle = C.treeTrunk;
+    ctx.fillRect(x - 3, sy + size * 0.55, 6, size * 0.5);
+    for (let i = 0; i < 3; i++) {
+      const w    = size * (1.2 - i * 0.18);
+      const yOff = sy - size * 0.1 + (size * 0.55 / 3) * i;
+      ctx.fillStyle = i === 0 ? C.treeDark : C.tree;
+      ctx.beginPath();
+      ctx.moveTo(x, yOff - size * 0.45 + i * 4);
+      ctx.lineTo(x - w, yOff + size * 0.18);
+      ctx.lineTo(x + w, yOff + size * 0.18);
+      ctx.closePath();
+      ctx.fill();
+      if (i === 2) {
+        ctx.fillStyle = C.treeSnow;
+        ctx.beginPath();
+        ctx.moveTo(x, yOff - size * 0.45 + i * 4);
+        ctx.lineTo(x - w * 0.5, yOff - size * 0.1 + i * 4);
+        ctx.lineTo(x + w * 0.5, yOff - size * 0.1 + i * 4);
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+    ctx.fillStyle = C.shadow;
+    ctx.beginPath();
+    ctx.ellipse(x + size * 0.3, sy + size * 0.65, size * 0.55, size * 0.15, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function drawRock(x, sy, size) {
+    ctx.fillStyle = C.shadow;
+    ctx.beginPath();
+    ctx.ellipse(x + size * 0.3, sy + size * 0.7, size * 0.7, size * 0.25, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = C.rock;
+    ctx.beginPath();
+    ctx.moveTo(x - size, sy + size * 0.5);
+    ctx.lineTo(x - size * 0.5, sy - size * 0.3);
+    ctx.lineTo(x, sy - size * 0.5);
+    ctx.lineTo(x + size * 0.6, sy - size * 0.1);
+    ctx.lineTo(x + size * 0.9, sy + size * 0.5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = C.rockHi;
+    ctx.beginPath();
+    ctx.moveTo(x - size * 0.2, sy - size * 0.35);
+    ctx.lineTo(x + size * 0.2, sy - size * 0.48);
+    ctx.lineTo(x + size * 0.4, sy - size * 0.15);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawGate(cx, half, sy) {
+    const postH = 38, flagH = 14;
+    const lx = cx - half, rx = cx + half;
+    ctx.fillStyle = C.gatePost;
+    ctx.fillRect(lx - 3, sy - postH, 6, postH);
+    ctx.fillRect(rx - 3, sy - postH, 6, postH);
+    ctx.fillStyle = C.gate;
+    ctx.beginPath(); ctx.roundRect(lx - 3, sy - postH - flagH, 18, flagH, 2); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(rx - 15, sy - postH - flagH, 18, flagH, 2); ctx.fill();
+    ctx.strokeStyle = C.gate; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+    ctx.beginPath(); ctx.moveTo(lx, sy - postH * 0.7); ctx.lineTo(rx, sy - postH * 0.7); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function drawObjects() {
+    objects.slice().sort((a, b) => a.worldY - b.worldY).forEach(o => {
+      const sy = o.worldY - scrollY;
+      if (sy < -80 || sy > H + 80) return;
+      if (o.type === OBJ_TREE) drawTree(o.x, sy, o.size);
+      if (o.type === OBJ_ROCK) drawRock(o.x, sy, o.size);
+      if (o.type === OBJ_GATE) drawGate(o.cx, o.half, sy);
+    });
+  }
+
+  function drawSkier(sx, sy) {
+    ctx.save();
+    const lean = velX * 0.04;
+    ctx.translate(sx, sy);
+    ctx.rotate(lean);
+    ctx.fillStyle = C.shadow;
+    ctx.beginPath(); ctx.ellipse(2, 22, 16, 5, lean, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = C.ski;
+    ctx.save(); ctx.rotate(lean * 0.5);
+    ctx.beginPath(); ctx.roundRect(-12, 16, 10, 5, 2); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(2, 16, 10, 5, 2);   ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = C.skier; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-4, 4); ctx.lineTo(-8, 16); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(4, 4);  ctx.lineTo(8, 16);  ctx.stroke();
+    ctx.fillStyle = C.suit;
+    ctx.beginPath(); ctx.roundRect(-7, -10, 14, 16, 5); ctx.fill();
+    ctx.fillStyle = C.skin;
+    ctx.beginPath(); ctx.arc(0, -16, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = C.skier;
+    ctx.beginPath(); ctx.arc(0, -17, 8, Math.PI, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = C.goggle;
+    ctx.beginPath(); ctx.roundRect(-7, -19, 14, 5, 3); ctx.fill();
+    ctx.strokeStyle = C.pole; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(-7, -5); ctx.lineTo(-20, 12); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(7, -5);  ctx.lineTo(20, 12);  ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawSpeedLines(sx, sy) {
+    if (speed < 5) return;
+    const alpha = Math.min((speed - 5) / 8, 0.35);
+    ctx.strokeStyle = `rgba(200,230,245,${alpha})`;
+    ctx.lineWidth   = 1.5;
+    for (let i = 0; i < 8; i++) {
+      const x   = sx - 30 + Math.random() * 60;
+      const y   = sy - 10 - Math.random() * 40;
+      const len = 15 + Math.random() * 25;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - len); ctx.stroke();
+    }
+  }
+
+  function drawPuffs() {
+    puffs = puffs.filter(p => p.life > 0);
+    puffs.forEach(p => {
+      p.life--; p.r += 1.5; p.x += p.vx; p.y += p.vy;
+      const a = p.life / p.maxLife;
+      ctx.fillStyle = `rgba(255,255,255,${a * 0.85})`;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    });
+  }
+
+  function spawnCrash(sx, sy) {
+    for (let i = 0; i < 18; i++) {
+      const ang = Math.random() * Math.PI * 2, spd = 1 + Math.random() * 3.5;
+      puffs.push({ x: sx, y: sy, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd - 1,
+                   r: 3 + Math.random() * 5, life: 28 + Math.random() * 16, maxLife: 44 });
+    }
+  }
+
+  const HIT_R = 15;
+
+  function checkCollisions() {
+    const sx = skierX, sy = H * 0.38;
+    for (const o of objects) {
+      if (o.hit) continue;
+      const osy = o.worldY - scrollY;
+
+      if (o.type === OBJ_TREE || o.type === OBJ_ROCK) {
+        const hr = o.type === OBJ_TREE ? o.size * 0.42 : o.size * 0.75;
+        if (Math.hypot(sx - o.x, sy - osy) < HIT_R + hr * 0.6) {
+          o.hit = true; spawnCrash(sx, sy); alive = false; return;
+        }
+      }
+
+      if (o.type === OBJ_GATE && !o.scored) {
+        if (Math.abs(osy - sy) < 28) {
+          if (sx > o.cx - o.half && sx < o.cx + o.half) {
+            o.scored = true; speed = Math.min(speed + 0.4, 18);
+          } else if (Math.abs(osy - sy) < 20) {
+            if (Math.abs(sx - (o.cx - o.half)) < HIT_R || Math.abs(sx - (o.cx + o.half)) < HIT_R) {
+              o.hit = true; spawnCrash(sx, sy); alive = false; return;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  function update() {
+    if (!alive) { if (++crashTimer > 70) die(); return; }
+    const maxV = 5.5 + speed * 0.2;
+    if (steerDir !== 0) velX += steerDir * 0.55;
+    velX   = Math.max(-maxV, Math.min(maxV, velX * 0.82));
+    skierX = Math.max(18, Math.min(W - 18, skierX + velX));
+    scrollY += speed;
+    speed   += 0.004;
+    dist     = Math.round(scrollY / 10);
+    distDisp.textContent = dist;
+    recordTrack();
+    spawnObjects();
+    checkCollisions();
+  }
+
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+    drawBg();
+    drawTracks();
+    drawObjects();
+    if (alive) { drawSpeedLines(skierX, H * 0.38); drawSkier(skierX, H * 0.38); }
+    drawPuffs();
+  }
+
+  function loop() {
+    if (state !== 'running') return;
+    raf = requestAnimationFrame(loop);
+    update();
+    render();
+  }
+
+  function startGame() {
+    scrollY = 0; speed = 3.2; dist = 0; velX = 0; steerDir = 0;
+    alive = true; crashTimer = 0; puffs = []; objects = []; trackL = []; trackR = [];
+    nextObjY = H * 0.9; skierX = W / 2;
+    startScreen.classList.add('hidden'); overScreen.classList.add('hidden'); hud.classList.remove('hidden');
+    state = 'running'; loop();
+  }
+
+  function die() {
+    state = 'dead'; cancelAnimationFrame(raf);
+    if (dist > best) { best = dist; localStorage.setItem('skiiBest', best); }
+    finalEl.textContent   = dist;
+    bestValEl.textContent = best;
+    bestDisp.textContent  = best;
+    overLabel.textContent = dist >= 500 ? '🏆 Legendary run!' : dist >= 200 ? '🎿 Great skiing!' : '💥 Wipeout!';
+    overTitle.textContent = dist + 'm skied';
+    hud.classList.add('hidden'); overScreen.classList.remove('hidden');
+  }
+
+  // Input
+  function handleDown(clientX) { if (state !== 'running') return; steerDir = clientX < W / 2 ? -1 : 1; }
+  function handleUp()           { steerDir = 0; }
+
+  canvas.addEventListener('touchstart',  e => { e.preventDefault(); handleDown(e.touches[0].clientX); }, { passive: false });
+  canvas.addEventListener('touchend',    e => { e.preventDefault(); handleUp(); }, { passive: false });
+  canvas.addEventListener('touchcancel', e => { e.preventDefault(); handleUp(); }, { passive: false });
+  canvas.addEventListener('mousedown',   e => handleDown(e.clientX));
+  canvas.addEventListener('mouseup',     handleUp);
+  canvas.addEventListener('mouseleave',  handleUp);
+
+  document.addEventListener('keydown', e => {
+    if (state !== 'running') return;
+    if (e.code === 'ArrowLeft'  || e.code === 'KeyA') { e.preventDefault(); steerDir = -1; }
+    if (e.code === 'ArrowRight' || e.code === 'KeyD') { e.preventDefault(); steerDir =  1; }
+  });
+  document.addEventListener('keyup', e => {
+    if (['ArrowLeft','KeyA','ArrowRight','KeyD'].includes(e.code)) steerDir = 0;
+  });
+
+  startBtn.addEventListener('click',   startGame);
+  restartBtn.addEventListener('click', startGame);
+
+  function resize() {
+    W = page.clientWidth; H = page.clientHeight;
+    canvas.width = W; canvas.height = H;
+    skierX = W / 2;
+    ctx.clearRect(0, 0, W, H); drawBg();
+  }
+
+  resize();
+  window.addEventListener('resize', () => { if (state !== 'running') resize(); });
+})();
+</script>
