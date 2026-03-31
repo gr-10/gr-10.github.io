@@ -117,51 +117,41 @@ if (sections.length && navAnchors.length) {
   sections.forEach(s => sectionObserver.observe(s));
 }
 
-// ── Photo gallery ─────────────────────────────────────────────
+// ── Photo gallery (post page) ───────────────────────────────────
 (function () {
   const track = document.getElementById('galleryTrack');
   if (!track) return;
 
-  const slides  = Array.from(track.querySelectorAll('.post-gallery-slide'));
-  const dots    = Array.from(document.querySelectorAll('[data-gallery-index]'));
-  const prevBtn = document.querySelector('[data-gallery-prev]');
-  const nextBtn = document.querySelector('[data-gallery-next]');
-  let current   = 0;
+  const slides = Array.from(track.querySelectorAll('.post-gallery-slide'));
 
-  function getSlideWidth() {
-    const s     = slides[0];
-    const style = window.getComputedStyle(s);
-    return s.offsetWidth + parseFloat(style.marginRight || 0);
-  }
+  // Tap slide → open full-size overlay
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:2100;align-items:center;justify-content:center;cursor:zoom-out;';
+  const overlayImg = document.createElement('img');
+  overlayImg.style.cssText = 'max-width:94vw;max-height:92vh;object-fit:contain;border-radius:6px;box-shadow:0 24px 80px rgba(0,0,0,.6);';
+  overlay.appendChild(overlayImg);
+  document.body.appendChild(overlay);
 
-  function goTo(index) {
-    const count = slides.length;
-    current     = ((index % count) + count) % count;
-    track.scrollTo({ left: current * getSlideWidth(), behavior: 'smooth' });
-    syncDots();
-  }
-
-  function syncDots() {
-    dots.forEach((d, i) => d.classList.toggle('active', i === current));
-  }
-
-  if (prevBtn) prevBtn.addEventListener('click', () => goTo(current - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => goTo(current + 1));
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => goTo(parseInt(dot.dataset.galleryIndex, 10)));
+  slides.forEach(slide => {
+    const img = slide.querySelector('img');
+    if (!img) return;
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => {
+      overlayImg.src = img.dataset.fullsrc || img.src;
+      overlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
   });
-
-  // Sync dots when user swipes manually
-  let scrollTimer;
-  track.addEventListener('scroll', () => {
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      const sw  = getSlideWidth();
-      const idx = Math.round(track.scrollLeft / sw);
-      if (idx !== current) { current = idx; syncDots(); }
-    }, 80);
-  }, { passive: true });
+  overlay.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.style.display === 'flex') {
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
 }());
 
 /* ── HORIZONTAL SCROLL TRACKS (entries + shorts on homepage) ─ */

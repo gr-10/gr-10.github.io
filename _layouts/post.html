@@ -26,22 +26,13 @@ layout: default
           <div class="post-gallery-track" id="galleryTrack">
             {% for img in page.gallery %}
             <div class="post-gallery-slide">
-              <img src="{{ site.imagekit_url }}/{{ img }}" alt="{{ page.title }} — photo {{ forloop.index }}" loading="lazy">
+              <img src="{{ site.imagekit_url }}/tr:w-800,q-80/{{ img }}"
+                   data-fullsrc="{{ site.imagekit_url }}/{{ img }}"
+                   alt="{{ page.title }} — photo {{ forloop.index }}" loading="lazy">
             </div>
             {% endfor %}
           </div>
         </div>
-        {% if page.gallery.size > 1 %}
-        <div class="post-gallery-nav">
-          <button class="gallery-btn gallery-btn--prev" aria-label="Previous photo" data-gallery-prev>‹</button>
-          <div class="gallery-dots" id="galleryDots">
-            {% for img in page.gallery %}
-            <button class="gallery-dot{% if forloop.first %} active{% endif %}" aria-label="Photo {{ forloop.index }}" data-gallery-index="{{ forloop.index0 }}"></button>
-            {% endfor %}
-          </div>
-          <button class="gallery-btn gallery-btn--next" aria-label="Next photo" data-gallery-next>›</button>
-        </div>
-        {% endif %}
       </div>
       {% endif %}
 

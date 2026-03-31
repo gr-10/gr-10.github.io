@@ -8,6 +8,7 @@ excerpt_custom: "10 days in Japan — sightseeing, trail running, and eating my 
 image: /assets/images/headers/japan-adventures.svg
 gallery:
   - "Portraits/IMG_4759.JPG"
+  - "Landscapes/IMG_4688 2.JPG"
 ---
 
 Japan had been on my list for years. I finally landed at Narita on a crisp February morning, jet-lagged but buzzing with anticipation. Ten days felt generous until I opened my itinerary and realised I'd crammed in Tokyo, Kyoto, Osaka, and Hakone — and somehow planned a trail run around Mount Kurama.

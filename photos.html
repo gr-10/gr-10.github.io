@@ -28,7 +28,7 @@ permalink: /photos/
            data-date="{{ photo.date | date: '%d %b %Y' }}"
            data-location="{{ photo.location }}">
         <button class="photo-thumb-link" aria-label="View photo">
-          <img src="{{ site.imagekit_url }}/{{ photo.url }}"
+          <img src="{{ site.imagekit_url }}/tr:w-600,q-75/{{ photo.url }}"
                alt="{{ photo.caption }}" loading="lazy" class="photo-thumb">
           <div class="photo-overlay">
             <span class="photo-overlay-title">{{ photo.caption }}</span>
@@ -56,7 +56,7 @@ permalink: /photos/
            data-date="{{ photo.date | date: '%d %b %Y' }}"
            data-location="{{ photo.location }}">
         <button class="photo-thumb-link" aria-label="View photo">
-          <img src="{{ site.imagekit_url }}/{{ photo.url }}"
+          <img src="{{ site.imagekit_url }}/tr:w-400,q-75/{{ photo.url }}"
                alt="{{ photo.caption }}" loading="lazy" class="photo-thumb">
           <div class="photo-overlay">
             <span class="photo-overlay-title">{{ photo.caption }}</span>

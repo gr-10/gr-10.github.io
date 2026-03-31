@@ -7,6 +7,7 @@ mood: "focused 🏐️"
 excerpt_custom: "Everything I wish I knew when I started lifting — form, programming, and staying consistent."
 gallery:
   - "Portraits/IMG_4759.JPG"
+  - "Landscapes/IMG_4688 2.JPG"
 ---
 
 When I walked into a gym for the first time, I had no idea what I was doing. I copied the guy next to me, got the form completely wrong, and barely progressed for 6 months. This guide is everything I wish someone had handed me on day one.
