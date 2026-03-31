@@ -18,59 +18,41 @@ permalink: /photos/
     <button class="photos-tab"        data-tab="landscapes" role="tab" aria-selected="false">Landscapes</button>
   </div>
 
-  <!-- TAB 2: Landscapes -->
-  <div class="photos-panel" id="tab-landscapes" role="tabpanel" hidden>
-    <div class="photos-grid photos-grid--landscapes" id="landscapeGrid">
-      {% for photo in site.data.photos %}{% if photo.aspect == "landscape" %}
+  <!-- TAB: Portraits -->
+  <div class="photos-panel active" id="tab-portraits" role="tabpanel">
+    <div class="photos-grid photos-grid--portraits" id="portraitGrid">
+      {% for photo in site.data.photos_portraits %}
       <div class="photo-item"
-           data-src="{{ site.imagekit_url }}/{{ photo.url }}"
-           data-title="{{ photo.caption }}"
-           data-date="{{ photo.date | date: '%d %b %Y' }}"
-           data-location="{{ photo.location }}">
+           data-src="https://ik.imagekit.io/gr10{{ photo.filePath }}"
+           data-title="{{ photo.name | replace: '_', ' ' | replace: '-', ' ' | split: '.' | first }}">
         <button class="photo-thumb-link" aria-label="View photo">
-          <img src="{{ site.imagekit_url }}/tr:w-600,q-75/{{ photo.url }}"
-               alt="{{ photo.caption }}" loading="lazy" class="photo-thumb">
+          <img src="https://ik.imagekit.io/gr10/tr:w-400,q-75{{ photo.filePath }}"
+               alt="{{ photo.name }}" loading="lazy" class="photo-thumb">
           <div class="photo-overlay">
-            <span class="photo-overlay-title">{{ photo.caption }}</span>
-            <span class="photo-overlay-meta">
-              {% if photo.location %}<span class="reel-location">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                {{ photo.location }}
-              </span>{% endif %}
-              <span class="photo-overlay-date">{{ photo.date | date: "%d %b %Y" }}</span>
-            </span>
+            <span class="photo-overlay-title">{{ photo.name | replace: '_', ' ' | replace: '-', ' ' | split: '.' | first }}</span>
           </div>
         </button>
       </div>
-      {% endif %}{% endfor %}
+      {% endfor %}
     </div>
   </div>
 
-  <!-- TAB 3: Portraits -->
-  <div class="photos-panel active" id="tab-portraits" role="tabpanel">
-    <div class="photos-grid photos-grid--portraits" id="portraitGrid">
-      {% for photo in site.data.photos %}{% if photo.aspect == "portrait" %}
+  <!-- TAB: Landscapes -->
+  <div class="photos-panel" id="tab-landscapes" role="tabpanel" hidden>
+    <div class="photos-grid photos-grid--landscapes" id="landscapeGrid">
+      {% for photo in site.data.photos_landscapes %}
       <div class="photo-item"
-           data-src="{{ site.imagekit_url }}/{{ photo.url }}"
-           data-title="{{ photo.caption }}"
-           data-date="{{ photo.date | date: '%d %b %Y' }}"
-           data-location="{{ photo.location }}">
+           data-src="https://ik.imagekit.io/gr10{{ photo.filePath }}"
+           data-title="{{ photo.name | replace: '_', ' ' | replace: '-', ' ' | split: '.' | first }}">
         <button class="photo-thumb-link" aria-label="View photo">
-          <img src="{{ site.imagekit_url }}/tr:w-400,q-75/{{ photo.url }}"
-               alt="{{ photo.caption }}" loading="lazy" class="photo-thumb">
+          <img src="https://ik.imagekit.io/gr10/tr:w-600,q-75{{ photo.filePath }}"
+               alt="{{ photo.name }}" loading="lazy" class="photo-thumb">
           <div class="photo-overlay">
-            <span class="photo-overlay-title">{{ photo.caption }}</span>
-            <span class="photo-overlay-meta">
-              {% if photo.location %}<span class="reel-location">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                {{ photo.location }}
-              </span>{% endif %}
-              <span class="photo-overlay-date">{{ photo.date | date: "%d %b %Y" }}</span>
-            </span>
+            <span class="photo-overlay-title">{{ photo.name | replace: '_', ' ' | replace: '-', ' ' | split: '.' | first }}</span>
           </div>
         </button>
       </div>
-      {% endif %}{% endfor %}
+      {% endfor %}
     </div>
   </div>
 
