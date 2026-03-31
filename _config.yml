@@ -3,9 +3,10 @@ tagline: "Personal Diary"
 description: >-
   The personal diary of Grenston George — daily logs on travel, fitness,
   thoughts, and everything in between.
-url: "https://gr-10.github.io"
+url: "https://gr10.life"
 baseurl: ""
 imagekit_url: "https://ik.imagekit.io/gr10"
+bunny_library_id: 628897
 
 author:
   name: Grenston George
