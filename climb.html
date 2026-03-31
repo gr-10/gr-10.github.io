@@ -1,12 +1,25 @@
 ---
 layout: default
-title: "Altitude Drop"
+title: "Summit Climber"
 permalink: /climb/
 ---
 
-<div class="climb-page" id="altDropPage">
+<div class="climb-page" id="climbPage">
 
-  <!-- Rotate warning (shown when landscape) -->
+  <!-- Desktop-only message -->
+  <div class="climb-desktop-msg" style="display:none">
+    <div class="msg-icon">📱</div>
+    <h2>Summit Climber is only available on mobile portrait mode</h2>
+    <p>Designed for touch screens held upright.<br>Grab your phone and visit this page to play!</p>
+    <a href="/#gameSection" class="msg-link">🏃 Play Trail Runner</a>
+  </div>
+
+  <script>
+    // Show desktop message immediately if not mobile
+    if (window.innerWidth > 700) {
+      document.currentScript.previousElementSibling.style.display = 'flex';
+    }
+  </script>
   <div class="rotate-warning" id="rotateWarning">
     <div class="rotate-warning-inner">
       <div class="rotate-icon">📱</div>
@@ -16,389 +29,467 @@ permalink: /climb/
   </div>
 
   <!-- Start Screen -->
-  <div class="climb-screen" id="adStartScreen">
+  <div class="climb-screen" id="climbStart">
     <div class="climb-screen-inner">
       <p class="climb-eyebrow">Mobile Game</p>
-      <h1 class="climb-title">Altitude<br>Drop</h1>
-      <p class="climb-subtitle">You're in freefall. Stay alive.</p>
+      <h1 class="climb-title">Summit<br>Climber</h1>
+      <p class="climb-subtitle">Reach the peak before you fall</p>
       <div class="climb-hint">
-        <div class="climb-hint-row"><span class="climb-hint-key">TAP LEFT</span><span>drift left</span></div>
-        <div class="climb-hint-row"><span class="climb-hint-key">TAP RIGHT</span><span>drift right</span></div>
-        <div class="climb-hint-row"><span class="climb-hint-key">☁️ CLOUDS</span><span>dodge them</span></div>
-        <div class="climb-hint-row"><span class="climb-hint-key">🎯 TARGET</span><span>land in the zone</span></div>
+        <div class="climb-hint-row"><span class="climb-hint-key">TAP LEFT</span><span>swing left hook</span></div>
+        <div class="climb-hint-row"><span class="climb-hint-key">TAP RIGHT</span><span>swing right hook</span></div>
+        <div class="climb-hint-row"><span class="climb-hint-key">🪝 HOOK</span><span>attaches to nearest ledge above</span></div>
+        <div class="climb-hint-row"><span class="climb-hint-key">🏔️ LEDGES</span><span>crumble after you land</span></div>
+        <div class="climb-hint-row"><span class="climb-hint-key">💨 WIND</span><span>grows stronger with height</span></div>
       </div>
-      <button class="climb-btn" id="adStartBtn">Jump! ↓</button>
+      <button class="climb-btn" id="climbStartBtn">Start Climbing ↑</button>
     </div>
   </div>
 
   <!-- Game Over -->
-  <div class="climb-screen hidden" id="adOverScreen">
+  <div class="climb-screen hidden" id="climbOver">
     <div class="climb-screen-inner">
-      <p class="climb-eyebrow" id="adOverLabel">💥 Wiped Out!</p>
-      <h2 class="climb-over-title" id="adOverTitle">0 points</h2>
+      <p class="climb-eyebrow" id="climbOverLabel">😬 You fell!</p>
+      <h2 class="climb-over-title" id="climbOverTitle">0m climbed</h2>
       <div class="climb-over-stats">
         <div class="climb-stat">
-          <span class="climb-stat-val" id="adFinal">0</span>
-          <span class="climb-stat-label">score</span>
+          <span class="climb-stat-val" id="climbFinal">0</span>
+          <span class="climb-stat-label">metres</span>
         </div>
         <div class="climb-stat climb-stat--best">
-          <span class="climb-stat-val" id="adBestVal">0</span>
+          <span class="climb-stat-val" id="climbBestVal">0</span>
           <span class="climb-stat-label">best</span>
         </div>
       </div>
-      <button class="climb-btn" id="adRestartBtn">Jump Again ↓</button>
+      <button class="climb-btn" id="climbRestartBtn">Try Again ↑</button>
     </div>
   </div>
 
   <!-- HUD -->
-  <div class="climb-hud hidden" id="adHud">
-    <span>📍 <strong id="adAlt">1200</strong>m</span>
-    <span>💨 <strong id="adWind">∅</strong></span>
-    <span>🏆 <strong id="adBest">0</strong></span>
+  <div class="climb-hud hidden" id="climbHud">
+    <span>⛰️ <strong id="climbHeightDisp">0</strong>m</span>
+    <span>🏆 <strong id="climbBestDisp">0</strong>m</span>
   </div>
 
-  <canvas id="adCanvas"></canvas>
+  <canvas id="climbCanvas"></canvas>
 </div>
 
 <script>
 (function () {
   'use strict';
 
-  const canvas = document.getElementById('adCanvas');
+  const canvas = document.getElementById('climbCanvas');
   const ctx    = canvas.getContext('2d');
-  const page   = document.getElementById('altDropPage');
+  const page   = document.getElementById('climbPage');
 
-  const startScreen = document.getElementById('adStartScreen');
-  const overScreen  = document.getElementById('adOverScreen');
-  const hud         = document.getElementById('adHud');
-  const startBtn    = document.getElementById('adStartBtn');
-  const restartBtn  = document.getElementById('adRestartBtn');
-  const altEl       = document.getElementById('adAlt');
-  const windEl      = document.getElementById('adWind');
-  const bestEl      = document.getElementById('adBest');
-  const finalEl     = document.getElementById('adFinal');
-  const bestValEl   = document.getElementById('adBestVal');
-  const overLabel   = document.getElementById('adOverLabel');
-  const overTitle   = document.getElementById('adOverTitle');
+  const startScreen  = document.getElementById('climbStart');
+  const overScreen   = document.getElementById('climbOver');
+  const hud          = document.getElementById('climbHud');
+  const startBtn     = document.getElementById('climbStartBtn');
+  const restartBtn   = document.getElementById('climbRestartBtn');
+  const heightDisp   = document.getElementById('climbHeightDisp');
+  const bestDisp     = document.getElementById('climbBestDisp');
+  const finalEl      = document.getElementById('climbFinal');
+  const bestValEl    = document.getElementById('climbBestVal');
+  const overLabel    = document.getElementById('climbOverLabel');
+  const overTitle    = document.getElementById('climbOverTitle');
 
-  let W, H;
-  let state = 'idle';
-  let raf;
-  let best = parseInt(localStorage.getItem('altDropBest') || '0', 10);
-  bestEl.textContent    = best;
-  bestValEl.textContent = best;
-
-  // ── SKY COLOURS ──────────────────────────────────
-  const SKY = ['#87CEEB','#5BA3D9','#2d6bbf','#1A3F6F','#0D1B2A'];
-  function lerpColour(a, b, t) {
-    const ah = parseInt(a.slice(1),16), bh = parseInt(b.slice(1),16);
-    const r  = Math.round(((ah>>16)&0xff) + (((bh>>16)&0xff)-((ah>>16)&0xff))*t);
-    const g  = Math.round(((ah>>8)&0xff)  + (((bh>>8)&0xff) -((ah>>8)&0xff))*t);
-    const bl = Math.round((ah&0xff)       + ((bh&0xff)       -(ah&0xff))*t);
-    return `rgb(${r},${g},${bl})`;
-  }
-  function skyAt(alt) {
-    const t   = Math.min(alt/1200, 1);
-    const idx = t * (SKY.length-1);
-    const lo  = Math.floor(idx), hi = Math.min(lo+1, SKY.length-1);
-    return lerpColour(SKY[lo], SKY[hi], idx-lo);
-  }
-
-  // ── GAME STATE ───────────────────────────────────
-  let altitude, wind, windTimer, score;
-  const obs = [];
-  let obsTimer = 0;
-  const target = { x:0, w:0 };
-
-  // ── PLAYER ───────────────────────────────────────
-  const P = {
-    x:0, y:0, vx:0, vy:1.5,
-    w:28, h:44,
-    grounded:false, spin:0,
-    frame:0, ftick:0,
-
-    reset() {
-      this.x = W/2 - this.w/2;
-      this.y = H * 0.06;
-      this.vx = 0; this.vy = 1.5;
-      this.grounded = false; this.spin = 0;
-    },
-    update() {
-      if (this.grounded) return;
-      this.vy += 0.16;
-      this.vx += wind * 0.011;
-      this.vx *= 0.96;
-      this.x  += this.vx;
-      this.y  += this.vy;
-      this.spin += this.vy * 0.035;
-      if (this.x < 0)          { this.x = 0;          this.vx =  Math.abs(this.vx)*0.4; }
-      if (this.x + this.w > W) { this.x = W - this.w; this.vx = -Math.abs(this.vx)*0.4; }
-      this.ftick++;
-      if (this.ftick > 7) { this.frame = (this.frame+1)%4; this.ftick = 0; }
-    },
-    draw() {
-      const cx = this.x + this.w/2, cy = this.y + this.h/2;
-      ctx.save();
-      ctx.translate(cx, cy);
-      if (!this.grounded) ctx.rotate(this.spin);
-
-      const openR = altitude < 80 ? Math.min(1, (80-altitude)/40) : 0;
-
-      // parachute
-      if (openR > 0) {
-        ctx.fillStyle = `rgba(255,111,0,${0.9*openR})`;
-        ctx.beginPath();
-        ctx.ellipse(0, -this.h/2-28*openR, 34*openR, 20*openR, 0, Math.PI, Math.PI*2);
-        ctx.fill();
-        ctx.strokeStyle = `rgba(160,70,0,${openR})`;
-        ctx.lineWidth = 1.5;
-        [-28,0,28].forEach(lx => {
-          ctx.beginPath();
-          ctx.moveTo(lx*openR, -this.h/2-10*openR);
-          ctx.lineTo(0, -this.h/2+8);
-          ctx.stroke();
-        });
-      }
-
-      // suit
-      ctx.fillStyle = '#ff6f00';
-      ctx.beginPath(); ctx.roundRect(-this.w/2+2, -this.h/2+10, this.w-4, this.h*0.52, 6); ctx.fill();
-
-      // helmet
-      ctx.fillStyle = '#e0e0e0';
-      ctx.beginPath(); ctx.arc(0, -this.h/2+8, this.w*0.38, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#90caf9';
-      ctx.beginPath(); ctx.arc(0, -this.h/2+8, this.w*0.26, 0, Math.PI*2); ctx.fill();
-
-      // arms spread
-      ctx.strokeStyle = '#ff6f00'; ctx.lineWidth = 5; ctx.lineCap = 'round';
-      const wave = Math.sin(this.frame*1.5) * 6;
-      ctx.beginPath(); ctx.moveTo(-this.w/2+2, -this.h*0.1); ctx.lineTo(-this.w/2-15, -this.h*0.1+wave); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo( this.w/2-2, -this.h*0.1); ctx.lineTo( this.w/2+15, -this.h*0.1-wave); ctx.stroke();
-
-      // legs
-      ctx.beginPath(); ctx.moveTo(-5, this.h*0.12); ctx.lineTo(-9,  this.h/2); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo( 5, this.h*0.12); ctx.lineTo( 9,  this.h/2); ctx.stroke();
-
-      ctx.restore();
-    },
-    hitbox() { return { x:this.x+5, y:this.y+5, w:this.w-10, h:this.h-10 }; }
+  // ── PALETTE ─────────────────────────────────────────
+  const C = {
+    skyTop:'#1a2e1a', skyMid:'#2d5a2d', skyBot:'#4a7c4a',
+    mtn1:'#4a7c59', mtn2:'#5fa372', hill:'#7ec880',
+    cliff:'#3a2e1a', cliffHi:'#5a4a2a', cliffEdge:'#7a6a3a',
+    snow:'rgba(255,255,255,0.85)',
+    rope:'#c8a456', hook:'#e8c466', hookGlow:'rgba(232,196,102,0.35)',
+    climber:'#1b5e20', skin:'#ffcc80', hair:'#4e342e',
+    pack:'#2d7a2d', helmet:'#e53935',
+    shadow:'rgba(0,0,0,0.25)',
+    wind:'rgba(255,255,255,0.12)',
+    fog:'rgba(200,230,200,0.08)',
+    cloudFill:'rgba(255,255,255,0.82)',
+    snowCap:'rgba(255,255,255,0.65)',
   };
 
-  // ── OBSTACLES ────────────────────────────────────
-  function spawnObs() {
-    const pool = altitude > 800 ? ['cloud','cloud','bird','plane'] :
-                 altitude > 400 ? ['cloud','cloud','bird'] : ['cloud','cloud','cloud'];
-    const type = pool[Math.floor(Math.random()*pool.length)];
-    if (type === 'cloud') {
-      const w = 65 + Math.random()*90;
-      obs.push({ type, x: Math.random()*(W-w), y: -70, w, h:46, vy:1.1+Math.random()*0.9 });
-    } else if (type === 'bird') {
-      const left = Math.random() > 0.5;
-      obs.push({ type, x: left?-40:W+40, y: H*0.15+Math.random()*H*0.35,
-        w:38, h:22, vx:(2.5+Math.random()*2)*(left?1:-1), wingUp:true, wt:0 });
-    } else {
-      const left = Math.random() > 0.5;
-      obs.push({ type:'plane', x: left?-120:W+120, y: H*0.08+Math.random()*H*0.2,
-        w:110, h:32, vx:(3.5+Math.random()*2)*(left?1:-1) });
+  // ── STATE ───────────────────────────────────────────
+  let W, H;
+  let state   = 'idle';
+  let height  = 0;
+  let camY    = 0;
+  let best    = parseInt(localStorage.getItem('summitBest') || '0', 10);
+  let raf;
+  let windX   = 0, windTarget = 0, windTick = 0;
+
+  bestDisp.textContent  = best;
+  bestValEl.textContent = best;
+
+  // ── LEDGES ──────────────────────────────────────────
+  const ledges = [];
+  let topLedgeY = 0;
+
+  function makeLedge(worldY, forceSide) {
+    const side = forceSide || (Math.random() < 0.5 ? 'left' : 'right');
+    const w    = 70 + Math.random() * 50;
+    const x    = side === 'left'
+      ? Math.random() * (W * 0.38)
+      : W - w - Math.random() * (W * 0.38);
+    return { x, y: worldY, w, h: 14, side, crumble: 0, crumbling: false };
+  }
+
+  function seedLedges() {
+    ledges.length = 0;
+    topLedgeY     = 0;
+    // wide start platform
+    ledges.push({ x: W*0.12, y: 60, w: W*0.76, h: 14, side:'start', crumble:0, crumbling:false });
+    let lastY = 60;
+    for (let i = 0; i < 40; i++) {
+      lastY += 90 + Math.random() * 60;
+      ledges.push(makeLedge(lastY, i%2===0 ? 'left' : 'right'));
+    }
+    topLedgeY = lastY;
+  }
+
+  function extendLedges() {
+    while (topLedgeY < camY + H * 2.5) {
+      topLedgeY += 85 + Math.random() * 70 + Math.min(height/50, 30);
+      ledges.push(makeLedge(topLedgeY));
+      if (ledges.length > 60) ledges.shift();
     }
   }
 
-  function updateObs() {
-    for (let i = obs.length-1; i >= 0; i--) {
-      const o = obs[i];
-      if (o.vy) o.y += o.vy;
-      if (o.vx) o.x += o.vx;
-      if (o.type === 'bird') { o.wt++; if(o.wt>10){o.wingUp=!o.wingUp;o.wt=0;} }
-      if (o.y > H+80 || o.x < -200 || o.x > W+200) obs.splice(i,1);
-    }
-  }
+  function toScreenY(worldY) { return H - (worldY - camY); }
 
-  function drawObs(o) {
-    ctx.save();
-    if (o.type === 'cloud') {
-      ctx.fillStyle = 'rgba(255,255,255,0.9)';
-      ctx.beginPath();
-      ctx.arc(o.x+o.w*0.28, o.y+o.h*0.62, o.h*0.5,  0, Math.PI*2);
-      ctx.arc(o.x+o.w*0.58, o.y+o.h*0.44, o.h*0.62, 0, Math.PI*2);
-      ctx.arc(o.x+o.w*0.84, o.y+o.h*0.62, o.h*0.44, 0, Math.PI*2);
-      ctx.fill();
-    } else if (o.type === 'bird') {
-      ctx.fillStyle = '#1a237e';
-      ctx.beginPath(); ctx.ellipse(o.x+o.w/2,o.y+o.h/2,o.w/2,o.h*0.28,0,0,Math.PI*2); ctx.fill();
-      ctx.beginPath();
-      if (o.wingUp) {
-        ctx.moveTo(o.x+o.w*0.18,o.y+o.h*0.5);
-        ctx.quadraticCurveTo(o.x+o.w*0.5,o.y-o.h*0.6,o.x+o.w*0.82,o.y+o.h*0.5);
-      } else {
-        ctx.moveTo(o.x+o.w*0.18,o.y+o.h*0.5);
-        ctx.quadraticCurveTo(o.x+o.w*0.5,o.y+o.h*1.4,o.x+o.w*0.82,o.y+o.h*0.5);
+  // ── CLIMBER ─────────────────────────────────────────
+  const climber = {
+    x:0, y:0, vx:0, vy:0,
+    w:22, h:38,
+    onLedge:null, alive:true,
+    hooks:[
+      { active:false, x:0, y:0, tx:0, ty:0, travelling:false, attached:false, ledge:null, side:'left', targetLedge:null },
+      { active:false, x:0, y:0, tx:0, ty:0, travelling:false, attached:false, ledge:null, side:'right', targetLedge:null },
+    ],
+    activeHook:-1,
+    swingAngle:0, swingVel:0, ropeLen:0,
+
+    reset() {
+      const s   = ledges[0];
+      this.x    = s.x + s.w/2;
+      this.y    = s.y + s.h + this.h;
+      this.vx   = 0; this.vy = 0;
+      this.onLedge = s; this.alive = true;
+      this.hooks.forEach(h => { h.active=false; h.travelling=false; h.attached=false; h.ledge=null; });
+      this.activeHook = -1;
+    },
+
+    fireHook(side) {
+      if (!this.alive) return;
+      const idx  = side === 'left' ? 0 : 1;
+      const hook = this.hooks[idx];
+      const other = this.hooks[1-idx];
+      other.active = false; other.travelling = false; other.attached = false; other.ledge = null;
+
+      // find nearest ledge above
+      let best = null, bestDist = Infinity;
+      for (const l of ledges) {
+        if (l.y <= this.y + 20) continue;
+        const dist = Math.hypot(l.x+l.w/2 - this.x, l.y - this.y);
+        if (dist < bestDist) { bestDist = dist; best = l; }
       }
-      ctx.fill();
-    } else {
-      const flip = o.vx < 0 ? -1 : 1;
-      ctx.translate(o.x+o.w/2, o.y+o.h/2);
-      ctx.scale(flip,1);
-      ctx.fillStyle = '#b0bec5';
-      ctx.beginPath(); ctx.roundRect(-o.w/2,-o.h*0.2,o.w,o.h*0.4,8); ctx.fill();
-      ctx.fillStyle = '#cfd8dc';
-      ctx.beginPath(); ctx.moveTo(-10,0); ctx.lineTo(10,0); ctx.lineTo(22,o.h*0.9); ctx.lineTo(-28,o.h*0.9); ctx.closePath(); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(-o.w/2,-o.h*0.2); ctx.lineTo(-o.w/2+18,-o.h*0.2); ctx.lineTo(-o.w/2+10,-o.h*0.72); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = '#90caf9'; ctx.beginPath(); ctx.arc(10,-2,5,0,Math.PI*2); ctx.fill();
+      if (!best) return;
+
+      hook.active = true; hook.travelling = true; hook.attached = false; hook.ledge = null;
+      hook.x = this.x; hook.y = this.y;
+      hook.tx = best.x + best.w*(side==='left'?0.25:0.75);
+      hook.ty = best.y + best.h;
+      hook.side = side; hook.targetLedge = best;
+      this.activeHook = idx;
+      this.onLedge = null;
+    },
+
+    update() {
+      if (!this.alive) return;
+      const hook = this.activeHook >= 0 ? this.hooks[this.activeHook] : null;
+
+      // advance travelling hooks
+      this.hooks.forEach(h => {
+        if (!h.travelling) return;
+        const dx = h.tx-h.x, dy = h.ty-h.y, dist = Math.hypot(dx,dy);
+        if (dist <= 18) { h.x=h.tx; h.y=h.ty; h.travelling=false; h.attached=true; h.ledge=h.targetLedge; }
+        else { h.x+=dx/dist*18; h.y+=dy/dist*18; }
+      });
+
+      if (this.onLedge) {
+        this.vy = 0;
+        this.y  = this.onLedge.y + this.onLedge.h + this.h;
+        this.x  = Math.max(this.onLedge.x+4, Math.min(this.onLedge.x+this.onLedge.w-4, this.x));
+        this.x += windX * 0.3;
+      } else if (hook && hook.attached) {
+        const ax = hook.x, ay = hook.y;
+        this.ropeLen = Math.hypot(this.x-ax, this.y-ay) || 80;
+        const ang = Math.atan2(this.x-ax, -(this.y-ay));
+        this.swingVel = (this.swingVel - (0.6/this.ropeLen)*Math.sin(ang)) * 0.985;
+        this.swingVel += windX * 0.002;
+        this.swingAngle = ang + this.swingVel;
+        this.x = ax + Math.sin(this.swingAngle)*this.ropeLen;
+        this.y = ay - Math.cos(this.swingAngle)*this.ropeLen;
+
+        // land?
+        for (const l of ledges) {
+          const feet = this.y - this.h/2;
+          if (feet <= l.y+l.h && feet >= l.y-4 && this.x > l.x && this.x < l.x+l.w) {
+            this.onLedge = l;
+            hook.active = false; hook.attached = false; this.activeHook = -1;
+            if (l.side !== 'start') l.crumbling = true;
+            break;
+          }
+        }
+      } else {
+        this.vy -= 0.55; this.y += this.vy;
+        this.x  += this.vx + windX*0.4; this.vx *= 0.97;
+        for (const l of ledges) {
+          const feet = this.y - this.h/2;
+          if (feet <= l.y+l.h && feet >= l.y-8 && this.x > l.x+4 && this.x < l.x+l.w-4 && this.vy<=0) {
+            this.onLedge = l; this.vy = 0; this.vx = 0;
+            if (l.side !== 'start') l.crumbling = true;
+            break;
+          }
+        }
+      }
+
+      // crumble
+      ledges.forEach(l => {
+        if (!l.crumbling) return;
+        l.crumble += 0.025;
+        if (l.crumble >= 1) { if (this.onLedge===l){this.onLedge=null;this.vy=0;} l.crumbling=false; }
+      });
+
+      // camera
+      camY += ((this.y - H*0.62) - camY) * 0.08;
+
+      // height
+      height = Math.max(height, Math.round((this.y - 60)/10));
+
+      // death
+      if (this.y < camY - H*0.3) this.alive = false;
+
+      // clamp x
+      this.x = Math.max(this.w/2, Math.min(W-this.w/2, this.x));
+    },
+
+    draw() {
+      const sx = this.x, sy = toScreenY(this.y);
+
+      // ropes
+      this.hooks.forEach(h => {
+        if (!h.active) return;
+        ctx.save();
+        ctx.strokeStyle = C.rope; ctx.lineWidth = 2.5; ctx.setLineDash([6,4]);
+        ctx.beginPath(); ctx.moveTo(sx, sy-this.h*0.75); ctx.lineTo(h.x, toScreenY(h.y)); ctx.stroke();
+        ctx.setLineDash([]);
+        const hsx = h.x, hsy = toScreenY(h.y);
+        ctx.fillStyle = C.hookGlow; ctx.beginPath(); ctx.arc(hsx,hsy,10,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = C.hook;    ctx.beginPath(); ctx.arc(hsx,hsy,5,0,Math.PI*2);  ctx.fill();
+        ctx.restore();
+      });
+
+      ctx.save();
+      const bx = sx-this.w/2, by = sy-this.h;
+
+      // shadow
+      ctx.fillStyle = C.shadow; ctx.beginPath(); ctx.ellipse(sx,sy+2,this.w*0.5,5,0,0,Math.PI*2); ctx.fill();
+
+      // legs
+      ctx.strokeStyle = C.climber; ctx.lineWidth = 5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(sx-5,sy-this.h*0.3); ctx.lineTo(sx-7,sy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(sx+5,sy-this.h*0.3); ctx.lineTo(sx+7,sy); ctx.stroke();
+
+      // torso
+      ctx.fillStyle = C.climber; ctx.beginPath(); ctx.roundRect(bx+3,by+this.h*0.28,this.w-6,this.h*0.42,5); ctx.fill();
+
+      // backpack
+      ctx.fillStyle = C.pack; ctx.beginPath(); ctx.roundRect(bx+this.w-6,by+this.h*0.3,7,this.h*0.26,3); ctx.fill();
+
+      // head
+      ctx.fillStyle = C.skin; ctx.beginPath(); ctx.arc(sx,by+this.h*0.14,this.h*0.14,0,Math.PI*2); ctx.fill();
+
+      // helmet
+      ctx.fillStyle = C.helmet;
+      ctx.beginPath(); ctx.arc(sx,by+this.h*0.1,this.h*0.14,Math.PI,Math.PI*2); ctx.fill();
+      ctx.fillRect(sx-this.h*0.14, by+this.h*0.1, this.h*0.28, 4);
+
+      // arms raised
+      ctx.strokeStyle = C.skin; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(sx-5,by+this.h*0.35); ctx.lineTo(sx-14,by+this.h*0.15); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(sx+5,by+this.h*0.35); ctx.lineTo(sx+14,by+this.h*0.15); ctx.stroke();
+
+      ctx.restore();
     }
-    ctx.restore();
+  };
+
+  // ── BACKGROUND ──────────────────────────────────────
+  const stars = Array.from({length:55}, () => ({
+    x:Math.random(), y:Math.random(), r:0.5+Math.random()*1.2, blink:Math.random()*Math.PI*2
+  }));
+
+  function lerpColour(a,b,t){
+    const ah=parseInt(a.slice(1),16),bh=parseInt(b.slice(1),16);
+    const r=Math.round(((ah>>16)&0xff)+(((bh>>16)&0xff)-((ah>>16)&0xff))*t);
+    const g=Math.round(((ah>>8)&0xff)+(((bh>>8)&0xff)-((ah>>8)&0xff))*t);
+    const bl=Math.round((ah&0xff)+((bh&0xff)-(ah&0xff))*t);
+    return `rgb(${r},${g},${bl})`;
   }
 
-  // ── BACKGROUND ───────────────────────────────────
   function drawBg() {
+    const p = Math.min(height/300,1);
     const g = ctx.createLinearGradient(0,0,0,H);
-    g.addColorStop(0, skyAt(altitude));
-    g.addColorStop(1, altitude < 150 ? '#c8e6c8' : skyAt(Math.max(0,altitude-200)));
+    g.addColorStop(0, lerpColor('#0a1a0a','#1a2e1a',1-p));
+    g.addColorStop(0.6, lerpColor('#1a3a1a','#2d5a2d',1-p));
+    g.addColorStop(1, lerpColor('#2d5a2d','#4a7c4a',1-p));
     ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
 
-    // stars at high altitude
-    if (altitude > 600) {
-      const a = Math.min((altitude-600)/400, 0.7);
-      ctx.fillStyle = `rgba(255,255,255,${a})`;
-      for (let i=0; i<35; i++) {
-        ctx.beginPath();
-        ctx.arc((i*137+17)%W, (i*89+31)%(H*0.65), 1, 0, Math.PI*2);
-        ctx.fill();
+    // stars
+    stars.forEach(s => {
+      s.blink += 0.04;
+      ctx.fillStyle = `rgba(255,255,255,${0.4+Math.sin(s.blink)*0.3})`;
+      ctx.beginPath(); ctx.arc(s.x*W, s.y*H*0.6, s.r, 0, Math.PI*2); ctx.fill();
+    });
+
+    // fog bands
+    for (let i=0;i<3;i++) {
+      const fy = ((H*0.2*i - (camY*0.05)%(H*0.3))+H)%H;
+      ctx.fillStyle = C.fog; ctx.fillRect(0,fy,W,40);
+    }
+  }
+
+  function lerpColor(a,b,t){return lerpColour(a,b,t);}
+
+  function drawLedges() {
+    for (const l of ledges) {
+      if (l.crumble >= 1) continue;
+      const sy = toScreenY(l.y+l.h);
+      if (sy > H+20 || sy < -20) continue;
+      ctx.save();
+      ctx.globalAlpha = 1 - l.crumble*l.crumble;
+      const shakeX = l.crumbling ? (Math.random()-0.5)*3*l.crumble : 0;
+      ctx.fillStyle = l.side==='start' ? '#3d6b3d' : C.cliff;
+      ctx.beginPath(); ctx.roundRect(l.x+shakeX, sy, l.w, l.h, 3); ctx.fill();
+      ctx.fillStyle = l.side==='start' ? '#5a9a5a' : C.cliffEdge;
+      ctx.fillRect(l.x+2+shakeX, sy, l.w-4, 3);
+      if (height > 80) {
+        const sw = l.w*Math.min((height-80)/80,1)*(1-l.crumble);
+        ctx.fillStyle = C.snow;
+        ctx.beginPath(); ctx.roundRect(l.x+(l.w-sw)/2+shakeX, sy, sw, 3, 2); ctx.fill();
       }
-    }
-
-    // ground
-    const gY = H - 58;
-    ctx.fillStyle = '#2e7d32'; ctx.fillRect(0, gY, W, 58);
-    ctx.fillStyle = '#388e3c'; ctx.fillRect(0, gY, W, 14);
-
-    // target
-    const pulse = 0.25 + 0.12*Math.sin(Date.now()/400);
-    ctx.fillStyle = `rgba(249,168,37,${pulse})`;
-    ctx.fillRect(target.x, 0, target.w, H);
-    ctx.fillStyle = '#f9a825';
-    ctx.fillRect(target.x, gY-6, target.w, 6);
-    ctx.font = 'bold 11px sans-serif';
-    ctx.fillStyle = '#f9a825';
-    ctx.textAlign = 'center';
-    ctx.fillText('🎯 LAND HERE', target.x+target.w/2, gY-12);
-    ctx.textAlign = 'left';
-  }
-
-  function drawWindStreaks() {
-    if (Math.abs(wind) < 0.8) return;
-    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-    ctx.lineWidth = 1;
-    for (let i=0; i<7; i++) {
-      const wx = ((Date.now()/7*Math.sign(wind))+i*67)%W;
-      const wy = 60 + i*50;
-      ctx.beginPath(); ctx.moveTo(wx,wy); ctx.lineTo(wx+wind*9,wy+3); ctx.stroke();
+      if (l.crumbling && l.crumble > 0.3) {
+        ctx.fillStyle = C.cliffHi;
+        for (let i=0;i<4;i++) {
+          ctx.beginPath();
+          ctx.arc(l.x+Math.random()*l.w, sy+l.h+Math.random()*10*l.crumble, 2, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
     }
   }
 
-  // ── RESIZE ───────────────────────────────────────
-  function resetTarget() {
-    target.w = 70 + Math.random()*60;
-    target.x = 20 + Math.random()*(W-target.w-40);
+  function drawAltitudeLines() {
+    for (let m=0; m<height+20; m+=50) {
+      const worldY = 60+m*10, sy = toScreenY(worldY);
+      if (sy<0||sy>H) continue;
+      ctx.save();
+      ctx.strokeStyle='rgba(255,255,255,0.06)'; ctx.lineWidth=1; ctx.setLineDash([4,10]);
+      ctx.beginPath(); ctx.moveTo(0,sy); ctx.lineTo(W,sy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font='10px Inter,sans-serif';
+      ctx.fillText(`${m}m`,6,sy-3);
+      ctx.restore();
+    }
   }
+
+  const windParts = Array.from({length:18},()=>({x:Math.random()*400,y:Math.random()*800,len:15+Math.random()*25,sp:2+Math.random()*3}));
+  function drawWind() {
+    if (Math.abs(windX)<0.3) return;
+    ctx.strokeStyle=C.wind; ctx.lineWidth=1;
+    windParts.forEach(p => {
+      p.x += windX*p.sp;
+      if (p.x>W+40) p.x=-40; if(p.x<-40) p.x=W+40;
+      ctx.beginPath(); ctx.moveTo(p.x,p.y%H); ctx.lineTo(p.x+windX*p.len,p.y%H); ctx.stroke();
+    });
+  }
+
+  // ── RESIZE ──────────────────────────────────────────
   function resize() {
     W = page.clientWidth; H = page.clientHeight;
     canvas.width = W; canvas.height = H;
-    if (state === 'idle') P.y = H*0.06;
-    P.x = W/2 - P.w/2;
-    resetTarget();
+    seedLedges();
+    climber.reset();
+    camY = climber.y - H*0.62;
   }
 
-  // ── MAIN LOOP ────────────────────────────────────
+  function renderFrame() {
+    drawBg(); drawWind(); drawAltitudeLines(); drawLedges(); climber.draw();
+  }
+
+  // ── LOOP ────────────────────────────────────────────
   function loop() {
     if (state !== 'running') return;
     raf = requestAnimationFrame(loop);
 
-    windTimer--;
-    if (windTimer <= 0) {
-      wind      = (Math.random()-0.5) * (3 + altitude/400);
-      windTimer = 90 + Math.floor(Math.random()*80);
-    }
+    windTick++;
+    if (windTick > 120) { windTarget=(Math.random()-0.5)*Math.min(height/60,2.5); windTick=0; }
+    windX += (windTarget-windX)*0.02;
 
-    P.update();
-    altitude = Math.max(0, altitude - P.vy*0.85);
-    score    = Math.max(score, 1200-altitude);
+    climber.update();
+    extendLedges();
+    heightDisp.textContent = height;
 
-    obsTimer++;
-    if (obsTimer > Math.max(38, 80 - altitude/25)) { spawnObs(); obsTimer=0; }
-    updateObs();
-
-    altEl.textContent  = Math.floor(altitude);
-    windEl.textContent = wind > 0.2 ? `→ ${wind.toFixed(1)}` : wind < -0.2 ? `← ${Math.abs(wind).toFixed(1)}` : '∅';
-
-    // collision
-    const ph = P.hitbox();
-    for (const o of obs) {
-      if (ph.x < o.x+o.w && ph.x+ph.w > o.x && ph.y < o.y+o.h && ph.y+ph.h > o.y) {
-        die(false); return;
-      }
-    }
-
-    // hit ground
-    if (P.y + P.h >= H-58) {
-      P.y = H-58-P.h; P.grounded = true;
-      const cx = P.x + P.w/2;
-      die(cx > target.x && cx < target.x+target.w);
-      return;
-    }
-
-    drawBg();
-    obs.forEach(drawObs);
-    P.draw();
-    drawWindStreaks();
+    if (!climber.alive) { die(); return; }
+    renderFrame();
   }
 
-  // ── START / DIE ──────────────────────────────────
+  // ── START / DIE ─────────────────────────────────────
   function startGame() {
-    altitude=1200; wind=0; windTimer=90; score=0;
-    obsTimer=0; obs.length=0;
-    resetTarget(); P.reset();
-    startScreen.classList.add('hidden');
-    overScreen.classList.add('hidden');
-    hud.classList.remove('hidden');
-    state = 'running';
-    loop();
+    height=0; camY=0; windX=0; windTarget=0; windTick=0;
+    seedLedges(); climber.reset();
+    camY = climber.y - H*0.62;
+    startScreen.classList.add('hidden'); overScreen.classList.add('hidden'); hud.classList.remove('hidden');
+    state='running'; loop();
   }
 
-  function die(landed) {
-    state = 'dead';
-    cancelAnimationFrame(raf);
-    const s = Math.floor(score);
-    if (s > best) { best=s; localStorage.setItem('altDropBest', best); }
-    finalEl.textContent   = s;
+  function die() {
+    state='dead'; cancelAnimationFrame(raf);
+    if (height>best){best=height;localStorage.setItem('summitBest',best);}
+    finalEl.textContent   = height;
     bestValEl.textContent = best;
-    bestEl.textContent    = best;
-    overLabel.textContent = landed ? '🎯 Nailed it!' : '💥 Wiped Out!';
-    overTitle.textContent = `${s} points`;
-    hud.classList.add('hidden');
-    overScreen.classList.remove('hidden');
+    bestDisp.textContent  = best;
+    overLabel.textContent = height>=200?'🏔️ Summit reached!':height>=100?'⛰️ Good effort!':'😬 You fell!';
+    overTitle.textContent = `${height}m climbed`;
+    hud.classList.add('hidden'); overScreen.classList.remove('hidden');
   }
 
-  // ── INPUT ────────────────────────────────────────
+  // ── INPUT ───────────────────────────────────────────
   canvas.addEventListener('touchstart', e => {
-    if (state !== 'running') return;
     e.preventDefault();
-    P.vx += e.touches[0].clientX < W/2 ? -3.8 : 3.8;
-  }, { passive: false });
+    if (state!=='running') return;
+    climber.fireHook(e.touches[0].clientX < W/2 ? 'left' : 'right');
+  }, {passive:false});
+
+  canvas.addEventListener('mousedown', e => {
+    if (state!=='running') return;
+    climber.fireHook(e.clientX < W/2 ? 'left' : 'right');
+  });
 
   document.addEventListener('keydown', e => {
-    if (state !== 'running') return;
-    if (e.code === 'ArrowLeft')  P.vx -= 3.8;
-    if (e.code === 'ArrowRight') P.vx += 3.8;
+    if (state!=='running') return;
+    if (e.code==='ArrowLeft'||e.code==='KeyA'){e.preventDefault();climber.fireHook('left');}
+    if (e.code==='ArrowRight'||e.code==='KeyD'){e.preventDefault();climber.fireHook('right');}
   });
 
   startBtn.addEventListener('click',   startGame);
   restartBtn.addEventListener('click', startGame);
 
-  // ── INIT ─────────────────────────────────────────
+  // ── INIT ────────────────────────────────────────────
   resize();
-  window.addEventListener('resize', () => { if (state !== 'running') resize(); });
-  drawBg(); P.draw();
+  window.addEventListener('resize', () => { if (state!=='running') resize(); });
+  renderFrame();
 
 })();
 </script>
