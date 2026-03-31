@@ -24,15 +24,14 @@ permalink: /shorts/
     {% for video in site.data.videos %}
     <div class="reel-card" data-tag="{{ video.tag | join: ',' }}">
 
-      <!-- 9:16 player -->
+      <!-- 3:4 player -->
       <div class="reel-player-wrap">
-        <div class="reel-thumbnail" id="thumb-{{ video.id }}">
+        <div class="reel-thumbnail" id="thumb-{{ video.video_id }}">
           <img
-            src="https://img.youtube.com/vi/{{ video.id }}/maxresdefault.jpg"
+            src="https://ik.imagekit.io/gr10/tr:w-400,h-533,fo-auto,q-40,f-webp/{{ video.thumbnail }}"
             alt="{{ video.title }}"
             class="reel-thumb-img"
-            loading="lazy"
-            onerror="this.src='https://img.youtube.com/vi/{{ video.id }}/hqdefault.jpg'"
+            loading="eager"
           >
           <button class="reel-play-btn" aria-label="Play {{ video.title }}">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -40,11 +39,11 @@ permalink: /shorts/
             </svg>
           </button>
         </div>
-        <div class="reel-iframe-wrap" id="iframe-{{ video.id }}" style="display:none;">
+        <div class="reel-iframe-wrap" id="iframe-{{ video.video_id }}" style="display:none;">
           <iframe
             class="reel-iframe"
             src=""
-            data-src="https://www.youtube.com/embed/{{ video.id }}?autoplay=1&rel=0&playsinline=1&loop=1&playlist={{ video.id }}"
+            data-src="https://iframe.mediadelivery.net/embed/{{ site.bunny_library_id }}/{{ video.video_id }}?autoplay=true&loop=true&preload=true"
             frameborder="0"
             allow="autoplay; fullscreen; picture-in-picture"
             allowfullscreen
