@@ -24,12 +24,12 @@ permalink: /photos/
       {% for photo in site.data.photos_portraits %}
       <div class="photo-item"
            data-src="https://ik.imagekit.io/gr10{{ photo.filePath }}"
-           data-title="{{ photo.name | replace: '_', ' ' | replace: '-', ' ' | split: '.' | first }}">
+           data-title="{{ photo.createdAt | date: '%d %b %Y' }}">
         <button class="photo-thumb-link" aria-label="View photo">
           <img src="https://ik.imagekit.io/gr10/tr:w-400,q-75{{ photo.filePath }}"
                alt="{{ photo.name }}" loading="lazy" class="photo-thumb">
           <div class="photo-overlay">
-            <span class="photo-overlay-title">{{ photo.name | replace: '_', ' ' | replace: '-', ' ' | split: '.' | first }}</span>
+            <span class="photo-overlay-title">{{ photo.createdAt | date: '%d %b %Y' }}</span>
           </div>
         </button>
       </div>
@@ -43,12 +43,12 @@ permalink: /photos/
       {% for photo in site.data.photos_landscapes %}
       <div class="photo-item"
            data-src="https://ik.imagekit.io/gr10{{ photo.filePath }}"
-           data-title="{{ photo.name | replace: '_', ' ' | replace: '-', ' ' | split: '.' | first }}">
+           data-title="{{ photo.createdAt | date: '%d %b %Y' }}">
         <button class="photo-thumb-link" aria-label="View photo">
           <img src="https://ik.imagekit.io/gr10/tr:w-600,q-75{{ photo.filePath }}"
                alt="{{ photo.name }}" loading="lazy" class="photo-thumb">
           <div class="photo-overlay">
-            <span class="photo-overlay-title">{{ photo.name | replace: '_', ' ' | replace: '-', ' ' | split: '.' | first }}</span>
+            <span class="photo-overlay-title">{{ photo.createdAt | date: '%d %b %Y' }}</span>
           </div>
         </button>
       </div>
