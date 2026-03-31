@@ -25,7 +25,7 @@ Let me tell about the major events of the day.
 
 I have a bullet bike, its a 2019 model. Let me show it to you:
 
-![Bullet Bike](https://ik.imagekit.io/gr10/tr:q-60/Landscapes/IMG_4836.JPG)
+![Bullet Bike](https://ik.imagekit.io/gr10/tr:h-400,q-80/Landscapes/IMG_4836.JPG)
 
 I have given it for re-painting, Its been 1 month. i got it back just today.
 The bike looks amazing, the paint job is top-notch. I am really happy with how it turned out.
@@ -41,12 +41,12 @@ I was fun experience, learning new tools and technologies. I may add more featur
 
 I am going to the gym for 4 months and I have transformed a lot.
 
-![Gym Progress](https://ik.imagekit.io/gr10/tr:q-60/Landscapes/IMG_4836.JPG)
+![Gym Progress](https://ik.imagekit.io/gr10/tr:h-400,q-80/Landscapes/IMG_4836.JPG)
 
 The workout was intensive today, I burned more than 500 calories in gym.
 I am following a very strict diet. I eat a lot of protein and reduce carbs.
 
-![Meal](https://ik.imagekit.io/gr10/tr:q-60/Portraits/IMG_4784.JPG?updatedAt=1774977139509)
+![Meal](https://ik.imagekit.io/gr10/tr:h-400,q-80/Portraits/IMG_4784.JPG)
 
 I also do HIIT everyday. Thats more tiring than gym but I love it.
 
