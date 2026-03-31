@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
-  <rect width="800" height="600" fill="#c8dfc8"/>
-  <rect y="360" width="800" height="240" fill="#8fb88f"/>
-  <ellipse cx="400" cy="200" rx="140" ry="90" fill="#f0e68c" opacity=".75"/>
-  <text x="400" y="530" font-family="Georgia,serif" font-size="22" fill="#2d7a2d" text-anchor="middle">The road stretching out to nowhere</text>
-  <text x="400" y="558" font-family="Georgia,serif" font-size="15" fill="#5a7a5a" text-anchor="middle">Alentejo, Portugal</text>
-</svg>

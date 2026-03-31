@@ -6,9 +6,7 @@ tag: Fitness
 mood: "motivated 💪"
 excerpt_custom: "No gym? No problem. My actual routine for staying consistent on the road."
 gallery:
-  - /assets/images/gallery/stay-fit-while-travelling/01-barbell.svg
-  - /assets/images/gallery/stay-fit-while-travelling/02-city-run.svg
-  - /assets/images/gallery/stay-fit-while-travelling/03-hotel-yoga.svg
+  - "Portraits/IMG_4759.JPG"
 ---
 
 The number one excuse I hear from fellow travellers is: "I can't train — I'm travelling." I used to say it too. Then I realised the excuse was a lie I was telling myself, and I stopped.

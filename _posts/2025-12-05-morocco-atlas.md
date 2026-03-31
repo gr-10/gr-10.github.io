@@ -7,9 +7,7 @@ mood: "awestruck 🌄"
 excerpt_custom: "Marrakech medinas, Sahara camping, and standing on the roof of North Africa."
 image: /assets/images/headers/morocco-atlas.svg
 gallery:
-  - /assets/images/gallery/morocco-atlas/01-sahara-dusk.svg
-  - /assets/images/gallery/morocco-atlas/02-medina.svg
-  - /assets/images/gallery/morocco-atlas/03-toubkal.svg
+  - "Portraits/IMG_4759.JPG"
 ---
 
 Morocco assaults your senses the moment you step off the plane. Spice, colour, sound, heat. I'd been warned it was overwhelming. The warning was accurate. It's also utterly intoxicating.

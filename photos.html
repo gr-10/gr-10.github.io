@@ -16,42 +16,6 @@ permalink: /photos/
   <div class="photos-tabs" role="tablist">
     <button class="photos-tab active" data-tab="portraits"  role="tab" aria-selected="true">Portraits</button>
     <button class="photos-tab"        data-tab="landscapes" role="tab" aria-selected="false">Landscapes</button>
-    <button class="photos-tab"        data-tab="diary"      role="tab" aria-selected="false">From the Diary</button>
-  </div>
-
-  <!-- TAB 1: From the Diary -->
-  <div class="photos-panel" id="tab-diary" role="tabpanel" hidden>
-    <div class="photos-panel-filter">
-      <button class="photo-filter-btn active" data-target="diaryGrid" data-filter="all">All</button>
-      {% assign all_tags = site.posts | map: "tag" | uniq | sort %}
-      {% for t in all_tags %}{% if t and t != "" %}
-        <button class="photo-filter-btn" data-target="diaryGrid" data-filter="{{ t }}">{{ t }}</button>
-      {% endif %}{% endfor %}
-      <button class="photo-filter-btn" data-target="diaryGrid" data-filter="other">Other</button>
-    </div>
-    <div class="photos-grid" id="diaryGrid">
-      {% for post in site.posts %}
-        {% assign tag_str = post.tag | join: "," %}
-        {% for img in post.gallery %}
-        <div class="photo-item" data-tag="{{ tag_str }}"
-             data-src="{{ img | relative_url }}"
-             data-title="{{ post.title }}"
-             data-date="{{ post.date | date: '%d %b %Y' }}">
-          <button class="photo-thumb-link" aria-label="View {{ post.title }}">
-            <img src="{{ img | relative_url }}" alt="{{ post.title }}" loading="lazy" class="photo-thumb">
-            <div class="photo-overlay">
-              <span class="photo-overlay-title">{{ post.title }}</span>
-              <span class="photo-overlay-meta">
-                {% assign tag_list = post.tag %}{% unless tag_list.first %}{% assign tag_list = post.tag | split: "," %}{% endunless %}
-                {% for t in tag_list %}<span class="diary-tag">{{ t | strip }}</span>{% endfor %}
-                <span class="photo-overlay-date">{{ post.date | date: "%d %b %Y" }}</span>
-              </span>
-            </div>
-          </button>
-        </div>
-        {% endfor %}
-      {% endfor %}
-    </div>
   </div>
 
   <!-- TAB 2: Landscapes -->
@@ -59,12 +23,12 @@ permalink: /photos/
     <div class="photos-grid photos-grid--landscapes" id="landscapeGrid">
       {% for photo in site.data.photos %}{% if photo.aspect == "landscape" %}
       <div class="photo-item"
-           data-src="{{ '/assets/images/random/' | append: photo.file | relative_url }}"
+           data-src="{{ site.imagekit_url }}/{{ photo.url }}"
            data-title="{{ photo.caption }}"
            data-date="{{ photo.date | date: '%d %b %Y' }}"
            data-location="{{ photo.location }}">
         <button class="photo-thumb-link" aria-label="View photo">
-          <img src="{{ '/assets/images/random/' | append: photo.file | relative_url }}"
+          <img src="{{ site.imagekit_url }}/{{ photo.url }}"
                alt="{{ photo.caption }}" loading="lazy" class="photo-thumb">
           <div class="photo-overlay">
             <span class="photo-overlay-title">{{ photo.caption }}</span>
@@ -87,12 +51,12 @@ permalink: /photos/
     <div class="photos-grid photos-grid--portraits" id="portraitGrid">
       {% for photo in site.data.photos %}{% if photo.aspect == "portrait" %}
       <div class="photo-item"
-           data-src="{{ '/assets/images/random/' | append: photo.file | relative_url }}"
+           data-src="{{ site.imagekit_url }}/{{ photo.url }}"
            data-title="{{ photo.caption }}"
            data-date="{{ photo.date | date: '%d %b %Y' }}"
            data-location="{{ photo.location }}">
         <button class="photo-thumb-link" aria-label="View photo">
-          <img src="{{ '/assets/images/random/' | append: photo.file | relative_url }}"
+          <img src="{{ site.imagekit_url }}/{{ photo.url }}"
                alt="{{ photo.caption }}" loading="lazy" class="photo-thumb">
           <div class="photo-overlay">
             <span class="photo-overlay-title">{{ photo.caption }}</span>
