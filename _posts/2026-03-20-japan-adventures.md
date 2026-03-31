@@ -5,7 +5,6 @@ date: 2026-03-20
 tag: Travel
 mood: "energised 🏃"
 excerpt_custom: "10 days in Japan — sightseeing, trail running, and eating my body weight in ramen."
-image: /assets/images/headers/japan-adventures.svg
 gallery:
   - "Portraits/IMG_4759.JPG"
   - "Landscapes/IMG_4688 2.JPG"

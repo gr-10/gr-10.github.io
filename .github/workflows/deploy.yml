@@ -3,6 +3,8 @@ name: Deploy Jekyll site to GitHub Pages
 on:
   push:
     branches: ["main"]
+  schedule:
+    - cron: "0 * * * *"   # every hour
   workflow_dispatch:
 
 permissions:
@@ -20,6 +22,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Fetch ImageKit photo lists
+        env:
+          IMAGEKIT_PRIVATE_KEY: ${{ secrets.IMAGEKIT_PRIVATE_KEY }}
+        run: |
+          fetch_folder() {
+            local folder="$1"
+            local outfile="$2"
+            curl -s \
+              -u "${IMAGEKIT_PRIVATE_KEY}:" \
+              "https://api.imagekit.io/v1/files?path=${folder}&fileType=image&limit=500&sort=DESC_CREATED" \
+              > "$outfile"
+          }
+          fetch_folder "Portraits"  "_data/photos_portraits.json"
+          fetch_folder "Landscapes" "_data/photos_landscapes.json"
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
