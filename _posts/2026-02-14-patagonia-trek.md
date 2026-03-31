@@ -8,6 +8,7 @@ excerpt_custom: "Five days on the W-Trek. Burning quads, incredible views, and a
 image: /assets/images/headers/patagonia-trek.svg
 gallery:
   - "Portraits/IMG_4759.JPG"
+  - "Landscapes/IMG_4688 2.JPG"
 ---
 
 I've done a lot of hikes. Snowdon in Wales, the Cinque Terre coastal trail, the Annapurna circuit — but nothing prepared me for Patagonia. Torres del Paine sits at the end of the world, and it feels like it.

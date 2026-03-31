@@ -8,6 +8,7 @@ excerpt_custom: "Marrakech medinas, Sahara camping, and standing on the roof of 
 image: /assets/images/headers/morocco-atlas.svg
 gallery:
   - "Portraits/IMG_4759.JPG"
+  - "Landscapes/IMG_4688 2.JPG"
 ---
 
 Morocco assaults your senses the moment you step off the plane. Spice, colour, sound, heat. I'd been warned it was overwhelming. The warning was accurate. It's also utterly intoxicating.

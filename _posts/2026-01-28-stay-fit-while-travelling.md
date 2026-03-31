@@ -7,6 +7,7 @@ mood: "motivated 💪"
 excerpt_custom: "No gym? No problem. My actual routine for staying consistent on the road."
 gallery:
   - "Portraits/IMG_4759.JPG"
+  - "Landscapes/IMG_4688 2.JPG"
 ---
 
 The number one excuse I hear from fellow travellers is: "I can't train — I'm travelling." I used to say it too. Then I realised the excuse was a lie I was telling myself, and I stopped.
