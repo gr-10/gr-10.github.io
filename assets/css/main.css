@@ -27,7 +27,11 @@ body {
   font-family: var(--font-body);
   line-height: 1.7;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+main { flex: 1; }
 a { color: inherit; text-decoration: none; }
 
 /* ── Utility ── */
@@ -582,7 +586,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .post-gallery-track-wrap {
-  /* strip wrapper */
+  /* strip wrapper — no overflow:hidden so photos can breathe */
 }
 
 .post-gallery-track {
@@ -1204,6 +1208,462 @@ a { color: inherit; text-decoration: none; }
 .photo-overlay-date {
   font-size: 0.72rem;
   color: rgba(255,255,255,.7);
+}
+
+/* ── TRAIL RUNNER GAME ───────────────────────────────────────────────────────── */
+.game-page {
+  width: 100%;
+  height: calc(100vh - 62px);
+  overflow: hidden;
+}
+
+/* embedded on homepage */
+.game-wrapper {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  background: var(--clr-bg);
+  overflow: hidden;
+  user-select: none;
+  border-top: 1px solid var(--clr-border);
+  border-bottom: 1px solid var(--clr-border);
+}
+
+/* standalone /run/ page: fill viewport */
+.game-page .game-wrapper {
+  height: calc(100vh - 62px);
+  border: none;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* overlay screens */
+.game-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(244,249,244,0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10;
+}
+.game-screen.hidden { display: none; }
+
+.game-screen-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  text-align: center;
+}
+
+.game-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+  margin: 0;
+}
+
+.game-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 4.2rem);
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.game-subtitle {
+  font-size: 1.05rem;
+  color: var(--clr-muted);
+  margin: 0;
+}
+
+.game-controls-hint {
+  display: flex;
+  gap: 1.4rem;
+  font-size: 0.85rem;
+  color: var(--clr-muted);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game-controls-hint kbd {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: 5px;
+  padding: 1px 7px;
+  font-size: 0.8rem;
+  color: var(--clr-text);
+  font-family: inherit;
+}
+
+.game-btn {
+  background: var(--clr-accent);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2.6rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: opacity 0.2s, transform 0.18s;
+  margin-top: 0.3rem;
+}
+.game-btn:hover { opacity: 0.86; transform: scale(1.04); }
+
+.game-over-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+}
+
+.game-over-stats {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.game-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.game-stat-val {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--clr-accent);
+  line-height: 1;
+}
+
+.game-stat--best .game-stat-val { color: var(--clr-muted); font-size: 1.8rem; }
+
+.game-stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+}
+
+/* HUD pill */
+.game-hud {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--clr-border);
+  border-radius: 999px;
+  padding: 0.38rem 1.4rem;
+  font-size: 0.88rem;
+  color: var(--clr-text);
+  z-index: 5;
+  white-space: nowrap;
+}
+.game-hud.hidden { display: none; }
+.hud-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--clr-border);
+  flex-shrink: 0;
+}
+.hud-item strong { color: var(--clr-accent); }
+
+/* ── SUMMIT CLIMBER GAME ────────────────────────────────────────────────────── */
+.climb-page {
+  width: 100%;
+  height: calc(100dvh - 60px - env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+  display: block;
+  position: relative;
+  background: #a8d8ea;
+}
+
+@media (min-width: 701px) {
+  .climb-page { display: none; } /* desktop: hidden */
+}
+
+.climb-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+}
+
+#climbCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* screens */
+.climb-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10,26,10,0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 10;
+}
+.climb-screen.hidden { display: none; }
+
+.climb-screen-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+.climb-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7ec880;
+  margin: 0;
+}
+
+.climb-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 12vw, 3.5rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.05;
+}
+
+.climb-subtitle {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+}
+
+.climb-hint {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+  max-width: 240px;
+}
+
+.climb-hint-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+}
+
+.climb-hint-key {
+  font-weight: 700;
+  color: #7ec880;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+}
+
+.climb-btn {
+  background: #2d7a2d;
+  color: #fff;
+  border: none;
+  padding: 0.85rem 2.4rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.18s;
+  margin-top: 0.4rem;
+  letter-spacing: 0.02em;
+}
+.climb-btn:hover, .climb-btn:active { opacity: 0.84; transform: scale(1.04); }
+
+.climb-over-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 8vw, 2.4rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.climb-over-stats {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-end;
+}
+
+.climb-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.climb-stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #7ec880;
+  line-height: 1;
+}
+
+.climb-stat--best .climb-stat-val { font-size: 2rem; color: rgba(255,255,255,0.45); }
+
+.climb-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+/* HUD */
+.climb-hud {
+  position: absolute;
+  top: 0.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 999px;
+  padding: 0.35rem 1.2rem;
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: 500;
+  z-index: 5;
+  white-space: nowrap;
+}
+.climb-hud.hidden { display: none; }
+.climb-hud strong { color: #7ec880; }
+
+/* rotate warning */
+.rotate-warning {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: #0a1a0a;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+@media (orientation: landscape) and (max-width: 900px) {
+  .rotate-warning { display: flex; }
+}
+.rotate-warning-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  text-align: center;
+  padding: 2rem;
+}
+.rotate-icon {
+  font-size: 3.5rem;
+  animation: rotatePulse 1.4s ease-in-out infinite;
+}
+@keyframes rotatePulse {
+  0%, 100% { transform: rotate(0deg); }
+  40%       { transform: rotate(90deg); }
+  60%       { transform: rotate(90deg); }
+}
+.rotate-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #fff;
+  margin: 0;
+}
+.rotate-sub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.5);
+  margin: 0;
+}
+
+/* mobile tab — only in bottom tab bar */
+.bottom-tab--climb-only {
+  display: flex;
+}
+@media (min-width: 701px) {
+  .bottom-tab--climb-only { display: none; }
+}
+
+/* game embedded on homepage */
+.game-section {
+  display: none; /* hidden on mobile */
+}
+
+@media (min-width: 701px) {
+  .game-section {
+    display: block;
+    position: relative;
+    padding: 0;
+  }
+  .game-section-label {
+    display: none; /* purely semantic, no visible label needed */
+  }
+}
+
+/* hide standalone game page on mobile — game is desktop only */
+@media (max-width: 700px) {
+  .game-page { display: none; }
+}
+
+/* ── FOOTER (desktop only) ──────────────────────────────────────────────────── */
+.site-footer { display: none; }
+
+@media (min-width: 701px) {
+  .site-footer {
+    display: block;
+    border-top: 1px solid var(--clr-border);
+  }
+  /* Kill the last section's bottom padding so footer sits flush */
+  main > *:last-child { padding-bottom: 0; margin-bottom: 0; }
+  .footer-bottom {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--clr-muted);
+  }
+  .footer-bottom-made { font-style: italic; }
 }
 
 /* ── ABOUT AVATAR — clickable ─────────────────────── */
