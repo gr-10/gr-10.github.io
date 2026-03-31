@@ -12,6 +12,7 @@ gallery:
   - "Landscapes/IMG_4835.JPG"
   - "Landscapes/IMG_4834.jpg"
   - "Landscapes/IMG_4688 2.JPG"
+  - "Landscapes/IMG_4836.JPG"
 ---
 
 Today marks the beginning of my diary. I've been wanting to start this for a while, and I'm excited to share my journey, thoughts, and reflections here. 
@@ -41,7 +42,7 @@ I was fun experience, learning new tools and technologies. I may add more featur
 
 I am going to the gym for 4 months and I have transformed a lot.
 
-![Gym Progress](https://ik.imagekit.io/gr10/tr:h-400,q-80/Landscapes/IMG_4836.JPG)
+![Gym Progress](https://ik.imagekit.io/gr10/tr:h-400,q-80/Portraits/IMG_4759.JPG)
 
 The workout was intensive today, I burned more than 500 calories in gym.
 I am following a very strict diet. I eat a lot of protein and reduce carbs.
