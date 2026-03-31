@@ -16,6 +16,19 @@
   });
 }());
 
+// ── Desktop nav links — highlight active page ─────────────────
+(function () {
+  const path = window.location.pathname;
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    const href = link.getAttribute('href');
+    const isHome = href === '/' || href === '/index.html';
+    const isActive =
+      (isHome && (path === '/' || path === '/index.html')) ||
+      (!isHome && path.startsWith(href.replace(/\/$/, '')));
+    if (isActive) link.classList.add('active');
+  });
+}());
+
 // ── Navbar scroll effect ──────────────────────────────────────
 const navbar = document.getElementById('navbar');
 if (navbar) {
