@@ -16,10 +16,15 @@ title: Home
     <div class="about-text fade-up">
       <p class="section-label" id="aboutTitle">Hey, I'm Grenston George</p>
       <h2>This is where I showcase my life.</h2>
+      <!-- Mobile-only CTAs: appear right below the heading -->
+      <div class="about-ctas about-ctas--mobile">
+        <a href="{{ '/diary/' | relative_url }}" class="btn btn-primary">Read my Diary →</a>
+        <a href="{{ '/shorts/' | relative_url }}" class="btn btn-outline">Watch my Shorts →</a>
+        <a href="{{ '/photos/' | relative_url }}" class="btn btn-outline">View my Photos →</a>
+      </div>
       <p>I write here every day — or at least I try to. I post short videos. Some days it's about a place I visited. Some days it's a workout, a meal, a random thought at 11 pm, or something that made me laugh on the commute.</p>
-      <p>I am a beginner level short video editor.</p>
       <p>No niche. No algorithm. Just honest, unfiltered entries from my actual life.</p>
-      <div class="about-ctas">
+      <div class="about-ctas about-ctas--desktop">
         <a href="{{ '/diary/' | relative_url }}" class="btn btn-primary">Read my Diary →</a>
         <a href="{{ '/shorts/' | relative_url }}" class="btn btn-outline">Watch my Shorts →</a>
         <a href="{{ '/photos/' | relative_url }}" class="btn btn-outline">View my Photos →</a>

@@ -330,7 +330,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 700px) {
-  .about-ctas { display: none; }
+  .about-ctas--desktop { display: none; }
+  .about-ctas--mobile { gap: 0.4rem; margin-top: 0.8rem; margin-bottom: 1.2rem; }
+  .about-ctas--mobile .btn { font-size: 0.78rem; padding: 0.55rem 0.6rem; }
+}
+@media (min-width: 701px) {
+  .about-ctas--mobile { display: none; }
 }
 
 /* ── Shared diary tag pill ── */
