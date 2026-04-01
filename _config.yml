@@ -1,4 +1,4 @@
-title: Grenston George
+title: Grenston's Life
 tagline: "Personal Diary"
 description: >-
   The personal diary of Grenston George — daily logs on travel, fitness,
@@ -7,6 +7,7 @@ url: "https://gr10.life"
 baseurl: ""
 imagekit_url: "https://ik.imagekit.io/gr10"
 bunny_library_id: 628897
+og_image: "https://gr10.life/assets/images/profile.jpg"
 
 author:
   name: Grenston George
