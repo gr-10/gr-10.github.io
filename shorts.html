@@ -27,30 +27,15 @@ permalink: /shorts/
 
       <!-- 3:4 player -->
       <div class="reel-player-wrap">
-        <div class="reel-thumbnail" id="thumb-{{ video.video_id }}">
-          <img
-            src="https://ik.imagekit.io/gr10/tr:w-400/{{ video.thumbnail }}"
-            alt="{{ video.title }}"
-            class="reel-thumb-img"
-            loading="eager"
-          >
-          <button class="reel-play-btn" aria-label="Play {{ video.title }}">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="reel-iframe-wrap" id="iframe-{{ video.video_id }}" style="display:none;">
-          <iframe
-            class="reel-iframe"
-            src=""
-            data-src="https://iframe.mediadelivery.net/embed/{{ site.bunny_library_id }}/{{ video.video_id }}?autoplay=true&loop=true&preload=true&playsinline=true"
-            frameborder="0"
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowfullscreen
-            playsinline
-          ></iframe>
-        </div>
+        <iframe
+          class="reel-iframe"
+          src="https://iframe.mediadelivery.net/embed/{{ site.bunny_library_id }}/{{ video.video_id }}?loop=true&preload=false&playsinline=true"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          playsinline
+          loading="lazy"
+        ></iframe>
       </div>
 
       <!-- Info -->
@@ -100,24 +85,13 @@ permalink: /shorts/
 </section>
 
 <script>
-  // Auto-play if ?play=slug is in the URL, else just scroll to hash
+  // Scroll to card if ?play=slug or #slug is in the URL
   (function () {
     const params = new URLSearchParams(window.location.search);
-    const playSlug = params.get('play');
-    const hash = window.location.hash.slice(1);
-    const targetSlug = playSlug || hash;
-
+    const targetSlug = params.get('play') || window.location.hash.slice(1);
     if (targetSlug) {
       const el = document.getElementById(targetSlug);
-      if (el) {
-        setTimeout(() => {
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          if (playSlug) {
-            const playBtn = el.querySelector('.reel-play-btn');
-            if (playBtn) playBtn.click();
-          }
-        }, 400);
-      }
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
     }
   })();
 
