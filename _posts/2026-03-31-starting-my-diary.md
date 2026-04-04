@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Starting My Diary"
 date: 2026-03-31
 tag: A new start

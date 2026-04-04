@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Maundy Thursday"
 date: 2026-04-02
 tag: RELIGIOUS

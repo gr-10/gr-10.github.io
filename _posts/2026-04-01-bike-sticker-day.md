@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Bike Sticker Day"
 date: 2026-04-01
 tag: automobile

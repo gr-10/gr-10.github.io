@@ -41,6 +41,11 @@ paginate: 10
 paginate_path: "/diary/page:num/"
 
 # Collections
+collections:
+  shorts:
+    output: true
+    permalink: /shorts/:slug/
+
 permalink: /diary/:year/:month/:day/:title/
 
 # Markdown
@@ -72,6 +77,11 @@ defaults:
       type: "pages"
     values:
       layout: "default"
+  - scope:
+      path: ""
+      type: "shorts"
+    values:
+      layout: "video"
 
 # Categories used for filtering
 travel_categories:

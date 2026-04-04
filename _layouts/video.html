@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} — {{ site.title }}</title>
+
+  <!-- Open Graph / WhatsApp -->
+  <meta property="og:type" content="video.other">
+  <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:title" content="{{ page.title }} — {{ site.title }}">
+  <meta property="og:description" content="{{ page.caption }}">
+  <meta property="og:url" content="{{ site.url }}/shorts/{{ page.slug }}/">
+  <meta property="og:image" content="https://ik.imagekit.io/gr10/tr:w-1200,h-630,fo-auto/{{ page.thumbnail }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page.title }} — {{ site.title }}">
+  <meta name="twitter:description" content="{{ page.caption }}">
+  <meta name="twitter:image" content="https://ik.imagekit.io/gr10/tr:w-1200,h-630,fo-auto/{{ page.thumbnail }}">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
+
+  <!-- Instant redirect to the shorts page anchored to this video -->
+  <meta http-equiv="refresh" content="0;url={{ site.url }}/shorts/#{{ page.slug }}">
+  <script>window.location.replace("{{ site.url }}/shorts/#{{ page.slug }}");</script>
+</head>
+<body></body>
+</html>
