@@ -21,6 +21,7 @@ I was inside the home the whole day. felt bored a lot.
 
 In the evening me and my family together cut pesaha bread. It was just a 5 min ritual.
 ![pesaha](https://ik.imagekit.io/gr10/tr:h-400,q-80/Portraits/IMG_4918.jpg)
+
 I am basically not so much of a beleiver, but I have to attend these for the sake of family.
 
 ### The church skip
