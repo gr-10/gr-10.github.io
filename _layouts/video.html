@@ -26,9 +26,9 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
 
-  <!-- Instant redirect to the shorts page anchored to this video -->
-  <meta http-equiv="refresh" content="0;url={{ site.url }}/shorts/#{{ page.slug }}">
-  <script>window.location.replace("{{ site.url }}/shorts/#{{ page.slug }}");</script>
+  <!-- Instant redirect to the shorts page with autoplay param -->
+  <meta http-equiv="refresh" content="0;url={{ site.url }}/shorts/?play={{ page.slug }}#{{ page.slug }}">
+  <script>window.location.replace("{{ site.url }}/shorts/?play={{ page.slug }}#{{ page.slug }}");</script>
 </head>
 <body></body>
 </html>

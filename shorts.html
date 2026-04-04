@@ -99,12 +99,24 @@ permalink: /shorts/
 </section>
 
 <script>
-  // Scroll to card if URL has a hash
+  // Auto-play if ?play=slug is in the URL, else just scroll to hash
   (function () {
+    const params = new URLSearchParams(window.location.search);
+    const playSlug = params.get('play');
     const hash = window.location.hash.slice(1);
-    if (hash) {
-      const el = document.getElementById(hash);
-      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+    const targetSlug = playSlug || hash;
+
+    if (targetSlug) {
+      const el = document.getElementById(targetSlug);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (playSlug) {
+            const playBtn = el.querySelector('.reel-play-btn');
+            if (playBtn) playBtn.click();
+          }
+        }, 400);
+      }
     }
   })();
 
