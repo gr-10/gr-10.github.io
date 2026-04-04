@@ -113,15 +113,11 @@ jobs:
               except Exception:
                   date_str = datetime.date.today().isoformat()
 
-              thumb_val = get_fm(content, "thumbnail") or (
-                  f"Thumbnails/{thumb_file}" if thumb_file
-                  else f"https://video.bunnycdn.com/library/{LIBRARY_ID}/videos/{video_id}/thumbnail"
-              )
+              thumb_val = get_fm(content, "thumbnail") or ""
 
               if not get_fm(content, "title"):     content = set_fm(content, "title", title)
               if not get_fm(content, "slug"):      content = set_fm(content, "slug", slug)
               if not get_fm(content, "date"):      content = set_fm(content, "date", date_str)
-              if not get_fm(content, "thumbnail"): content = set_fm(content, "thumbnail", thumb_val)
               if not get_fm(content, "caption") and desc:
                                                    content = set_fm(content, "caption", desc)
 
