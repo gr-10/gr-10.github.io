@@ -6,3 +6,12 @@
   mood: ["alive 🌅", "energised 🏃"]
   location: "Lakshadweep, India"
   caption: "Exploring the serene beauty of Lakshadweep."
+
+- video_id: fdc0f70c-dab4-44cc-bf69-8ae4952ce4d1
+  thumbnail: "Thumbnails/swimunderthumb.webp"
+  title: "Swim Day"
+  date: 2026-04-01
+  tag: [Sports]
+  mood: ["refreshing 💦"]
+  location: "Somewhere"
+  caption: "A swim day"
