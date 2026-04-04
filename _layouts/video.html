@@ -26,9 +26,13 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
 
-  <!-- Instant redirect to the shorts page with autoplay param -->
+  <!-- Redirect to shorts page, auto-playing this video inline -->
   <meta http-equiv="refresh" content="0;url={{ site.url }}/shorts/?play={{ page.slug }}#{{ page.slug }}">
   <script>window.location.replace("{{ site.url }}/shorts/?play={{ page.slug }}#{{ page.slug }}");</script>
+
+  <style>
+    body { margin: 0; }
+  </style>
 </head>
 <body></body>
 </html>
