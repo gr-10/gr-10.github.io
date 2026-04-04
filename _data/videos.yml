@@ -1,12 +1,3 @@
-- video_id: 1bb9d9d2-0979-4d0f-8641-bbfbfc462c6e
-  thumbnail: "Thumbnails/lakshadweep.webp"
-  title: "Lakshadweep trip"
-  date: 2026-03-31
-  tag: [Travel]
-  mood: ["alive 🌅", "energised 🏃"]
-  location: "Lakshadweep, India"
-  caption: "Exploring the serene beauty of Lakshadweep."
-
 - video_id: fdc0f70c-dab4-44cc-bf69-8ae4952ce4d1
   thumbnail: "Thumbnails/swimunderthumb.webp"
   title: "Swim Day"
@@ -15,3 +6,12 @@
   mood: ["refreshing 💦"]
   location: "Somewhere"
   caption: "A swim day"
+
+- video_id: 1bb9d9d2-0979-4d0f-8641-bbfbfc462c6e
+  thumbnail: "Thumbnails/lakshadweep.webp"
+  title: "Lakshadweep trip"
+  date: 2026-03-31
+  tag: [Travel]
+  mood: ["alive 🌅", "energised 🏃"]
+  location: "Lakshadweep, India"
+  caption: "Exploring the serene beauty of Lakshadweep."
